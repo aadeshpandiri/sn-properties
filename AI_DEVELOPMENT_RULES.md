@@ -1,6 +1,6 @@
 # AI Development Rules
 
-- TypeScript only
+- JavaScript only
 - App Router only
 - Tailwind CSS only
 - No inline styles
