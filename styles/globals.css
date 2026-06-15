@@ -1,0 +1,60 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: theme('fontFamily.inter');
+}
+
+body {
+  background-color: theme('colors.background');
+  color: theme('colors.text');
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: theme('fontFamily.poppins');
+  font-weight: 700;
+}
+
+/* Custom utility classes */
+@layer components {
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-white px-6 py-3 rounded-md font-medium hover:bg-secondary transition-colors;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-white px-6 py-3 rounded-md font-medium hover:bg-primary transition-colors;
+  }
+
+  .btn-ghost {
+    @apply text-primary border border-primary px-6 py-3 rounded-md font-medium hover:bg-surface transition-colors;
+  }
+
+  .card {
+    @apply bg-white rounded-lg shadow-card hover:shadow-hover transition-shadow;
+  }
+
+  .section-title {
+    @apply text-4xl font-bold text-primary mb-4;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

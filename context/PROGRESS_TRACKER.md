@@ -35,7 +35,8 @@ Building a premium real estate platform with public website, admin dashboard, le
   - ✅ README.md with complete documentation
 - **Blockers:** None
 - **Notes:** 
-  - Project located at: snproperties-web/
+  - Project located at: c:\Users\aades\Downloads\snproperties\
+  - Documentation in: context/ folder
   - Ready for npm install and Phase 2 development
   - Design tokens configured with premium color palette (#0F172A, #1E293B, #D4A373)
   - Typography setup: Poppins (headings), Inter (body)
