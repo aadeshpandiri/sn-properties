@@ -1,4 +1,6 @@
 import '../styles/globals.css';
+import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
 
 export const metadata = {
   title: 'SN Properties - Premium Real Estate Platform',
@@ -25,8 +27,12 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
         />
       </head>
-      <body className="bg-background text-text">
-        {children}
+      <body className="bg-background text-text flex flex-col min-h-screen">
+        <Navigation />
+        <div className="flex-1">
+          {children}
+        </div>
+        <Footer />
       </body>
     </html>
   );
