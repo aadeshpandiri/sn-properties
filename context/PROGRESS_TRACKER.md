@@ -184,19 +184,25 @@ Building a premium real estate platform with public website, admin dashboard, le
 ---
 
 ### Phase 8: Media Uploads
-- **Status:** ⏳ Not Started
+- **Status:** ✅ Completed
 - **Tasks:**
-  - [ ] Setup Supabase storage buckets
-  - [ ] Create image upload component
-  - [ ] Create video upload component
-  - [ ] Image optimization (compression, resizing)
-  - [ ] Create image gallery in property form
-  - [ ] Create video preview component
-  - [ ] Setup image lazy loading
-  - [ ] Setup delete media functionality
+  - [x] Setup Supabase storage buckets — user creates 2 public buckets: property-images, property-videos
+  - [x] Create image upload component — components/admin/ImageUpload.js (immediate upload on select)
+  - [x] Create video URL component — components/admin/VideoUrlInput.js (YouTube/Vimeo URL + thumbnail preview)
+  - [x] Image optimization — Next.js Image component; max 5MB enforced server-side
+  - [x] Create image gallery in property form — Photos section inside PropertyForm with grid preview + delete
+  - [x] Create video preview — YouTube thumbnail from video ID; generic icon for other URLs
+  - [x] Setup image lazy loading — browser-native lazy via <img> tags in upload preview grid
+  - [x] Setup delete media functionality — deletePropertyImage + deletePropertyVideo server actions
 - **Deliverables:** Complete media management system
-- **Blockers:** Awaiting Phase 7 completion
-- **Notes:** Performance optimization important
+- **Blockers:** None
+- **Notes:**
+  - Image uploads via Server Action with service role — no storage RLS policies needed
+  - Videos are URL-based (YouTube/Vimeo) — stored in property_videos table
+  - Uploads happen immediately on file select — per-image spinner, parent notified via useEffect
+  - createProperty now returns { success, id } so images can be associated after creation
+  - bodySizeLimit: '10mb' added to next.config.js experimental.serverActions
+  - Supabase storage domain added to next.config.js images.domains
 
 ---
 
@@ -416,9 +422,9 @@ Building a premium real estate platform with public website, admin dashboard, le
 ## Summary
 
 **Total Phases:** 18  
-**Current Progress:** 38.9% (Phases 1–7 Completed)  
-**Last Phase Completed:** Phase 7 - Property CRUD ✅  
-**Next Phase:** Phase 8 - Media Uploads ⏳  
+**Current Progress:** 44.4% (Phases 1–8 Completed)  
+**Last Phase Completed:** Phase 8 - Media Uploads ✅  
+**Next Phase:** Phase 9 - Listing & Search ⏳  
 **Estimated Duration:** 2-3 weeks total  
 **Completion Date Estimate:** 2026-06-30  
 **Last Updated:** 2026-06-19

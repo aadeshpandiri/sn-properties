@@ -6,6 +6,9 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { propertySchema } from '@/lib/validators';
 import { PROPERTY_TYPES, LISTING_TYPES, PROPERTY_STATUS } from '@/lib/constants';
+import { savePropertyImages, savePropertyVideos } from '@/app/actions/properties';
+import ImageUpload from '@/components/admin/ImageUpload';
+import VideoUrlInput from '@/components/admin/VideoUrlInput';
 
 function FieldError({ error }) {
   if (!error) return null;
@@ -21,12 +24,15 @@ function Label({ children, required }) {
   );
 }
 
-const inputClass = 'w-full px-3.5 py-2.5 rounded-lg border border-border bg-white text-primary text-sm placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent';
+const inputClass =
+  'w-full px-3.5 py-2.5 rounded-lg border border-border bg-white text-primary text-sm placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent';
 
-export default function PropertyForm({ property, action }) {
+export default function PropertyForm({ property, action, existingImages = [], existingVideos = [] }) {
   const router = useRouter();
   const [serverError, setServerError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [pendingImageUrls, setPendingImageUrls] = useState([]);
+  const [pendingVideoUrls, setPendingVideoUrls] = useState([]);
   const isEdit = Boolean(property);
 
   const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm({
@@ -53,12 +59,23 @@ export default function PropertyForm({ property, action }) {
   const onSubmit = async (data) => {
     setLoading(true);
     setServerError('');
+
     const result = await action(data);
+
     if (result?.error) {
       setServerError(result.error);
       setLoading(false);
       return;
     }
+
+    // Associate media with the property (create uses returned id, edit uses property.id)
+    const propertyId = result?.id ?? property?.id;
+
+    if (propertyId) {
+      if (pendingImageUrls.length) await savePropertyImages(propertyId, pendingImageUrls);
+      if (pendingVideoUrls.length) await savePropertyVideos(propertyId, pendingVideoUrls);
+    }
+
     router.push('/admin/properties');
     router.refresh();
   };
@@ -78,14 +95,12 @@ export default function PropertyForm({ property, action }) {
           <h3 className="font-semibold text-primary mb-5">Basic Information</h3>
           <div className="space-y-4">
 
-            {/* Title */}
             <div>
               <Label required>Property Title</Label>
               <input {...register('title')} placeholder="e.g. Modern Downtown Apartment" className={inputClass} />
               <FieldError error={errors.title} />
             </div>
 
-            {/* Listing type toggle */}
             <div>
               <Label required>Listing Type</Label>
               <div className="flex rounded-lg overflow-hidden border border-border w-fit">
@@ -108,7 +123,6 @@ export default function PropertyForm({ property, action }) {
               <FieldError error={errors.listing_type} />
             </div>
 
-            {/* Property type + Status */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <Label required>Property Type</Label>
@@ -132,7 +146,6 @@ export default function PropertyForm({ property, action }) {
               </div>
             </div>
 
-            {/* Featured */}
             <div className="flex items-center gap-3">
               <input
                 {...register('featured')}
@@ -235,16 +248,34 @@ export default function PropertyForm({ property, action }) {
         {/* ── DESCRIPTION ── */}
         <div className="card p-6">
           <h3 className="font-semibold text-primary mb-5">Description</h3>
-          <div>
-            <Label required>Property Description</Label>
-            <textarea
-              {...register('description')}
-              rows={6}
-              placeholder="Describe the property — features, highlights, nearby amenities…"
-              className={`${inputClass} resize-none`}
-            />
-            <FieldError error={errors.description} />
-          </div>
+          <Label required>Property Description</Label>
+          <textarea
+            {...register('description')}
+            rows={6}
+            placeholder="Describe the property — features, highlights, nearby amenities…"
+            className={`${inputClass} resize-none`}
+          />
+          <FieldError error={errors.description} />
+        </div>
+
+        {/* ── PHOTOS ── */}
+        <div className="card p-6">
+          <h3 className="font-semibold text-primary mb-1">Photos</h3>
+          <p className="text-muted text-xs mb-5">Photos upload immediately when selected — no need to save first.</p>
+          <ImageUpload
+            existingImages={existingImages}
+            onNewImages={setPendingImageUrls}
+          />
+        </div>
+
+        {/* ── VIDEOS ── */}
+        <div className="card p-6">
+          <h3 className="font-semibold text-primary mb-1">Videos</h3>
+          <p className="text-muted text-xs mb-5">Paste YouTube or Vimeo URLs to showcase video tours.</p>
+          <VideoUrlInput
+            existingVideos={existingVideos}
+            onNewVideos={setPendingVideoUrls}
+          />
         </div>
 
         {/* ── ACTIONS ── */}
@@ -261,7 +292,9 @@ export default function PropertyForm({ property, action }) {
             disabled={loading}
             className="bg-primary text-white px-8 py-2.5 rounded-lg text-sm font-semibold hover:bg-secondary transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            {loading ? (isEdit ? 'Saving…' : 'Creating…') : (isEdit ? 'Save Changes' : 'Create Property')}
+            {loading
+              ? (isEdit ? 'Saving…' : 'Creating…')
+              : (isEdit ? 'Save Changes' : 'Create Property')}
           </button>
         </div>
 
