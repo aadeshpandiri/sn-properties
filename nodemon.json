@@ -1,0 +1,6 @@
+{
+  "watch": ["next.config.js", "tailwind.config.js", "postcss.config.js", ".env.local", ".env"],
+  "ext": "js,json,env",
+  "exec": "next dev",
+  "ignore": [".next", "node_modules", ".git"]
+}
