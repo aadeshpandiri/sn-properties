@@ -1,3 +1,4 @@
+import { headers } from 'next/headers';
 import '../styles/globals.css';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
@@ -15,7 +16,11 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const heads = await headers();
+  const pathname = heads.get('x-pathname') ?? '';
+  const isAdmin = pathname.startsWith('/admin');
+
   return (
     <html lang="en">
       <head>
@@ -30,11 +35,11 @@ export default function RootLayout({ children }) {
       </head>
       <body className="bg-background text-text flex flex-col min-h-screen">
         <Providers>
-          <Navigation />
-          <div className="flex-1">
+          {!isAdmin && <Navigation />}
+          <div className={isAdmin ? 'contents' : 'flex-1'}>
             {children}
           </div>
-          <Footer />
+          {!isAdmin && <Footer />}
         </Providers>
       </body>
     </html>

@@ -1,13 +1,9 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect } from 'react';
-import { supabase, isSupabaseConfigured } from '@/lib/supabase';
+import { createBrowserClient } from '@supabase/ssr';
 
-const AuthContext = createContext({
-  user: null,
-  loading: true,
-  isAdmin: false,
-});
+const AuthContext = createContext({ user: null, loading: true });
 
 export function useAuthContext() {
   return useContext(AuthContext);
@@ -17,22 +13,22 @@ function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (!isSupabaseConfigured) {
-      setLoading(false);
-      return;
-    }
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  );
 
-    supabase.auth.getSession().then(({ data }) => {
-      setUser(data?.session?.user ?? null);
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
       setLoading(false);
     });
 
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
     });
 
-    return () => listener?.subscription?.unsubscribe();
+    return () => subscription.unsubscribe();
   }, []);
 
   return (

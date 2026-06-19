@@ -135,19 +135,27 @@ Building a premium real estate platform with public website, admin dashboard, le
 ---
 
 ### Phase 6: Authentication
-- **Status:** ⏳ Not Started
+- **Status:** ✅ Completed
 - **Tasks:**
-  - [ ] Setup Supabase Auth
-  - [ ] Create login page (admin)
-  - [ ] Create signup page (admin)
-  - [ ] Create password reset flow
-  - [ ] Create protected API routes
-  - [ ] Create auth middleware
-  - [ ] Setup session management
-  - [ ] Create logout functionality
-- **Deliverables:** Secure admin authentication
-- **Blockers:** Awaiting Phase 5 completion
-- **Notes:** Admin-only authentication
+  - [x] Setup Supabase Auth (email/password)
+  - [x] Create login page — /admin/login with React Hook Form + Zod validation
+  - [x] Create password reset flow — /admin/forgot-password (email) + /admin/reset-password (new password)
+  - [x] Create auth middleware — middleware.js protects all /admin/* routes
+  - [x] Setup session management — @supabase/ssr cookie-based sessions (works with Next.js SSR)
+  - [x] Create logout functionality — AdminSidebar sign out button
+  - [x] Admin dashboard — /admin with live Supabase stats (properties, inquiries, visits, testimonials)
+  - [x] Admin layout — sidebar with navigation (no public Nav/Footer on admin pages)
+  - [x] Signup page — admins are created via Supabase Dashboard → Authentication → Users (no public signup)
+- **Deliverables:** Secure admin authentication with protected routes
+- **Blockers:** None
+- **Notes:**
+  - Middleware redirects unauthenticated /admin → /admin/login (307 redirect confirmed)
+  - Authenticated user on /admin/login → redirects to /admin dashboard
+  - Root layout hides public Navigation/Footer for /admin/* using x-pathname header trick
+  - @supabase/ssr installed for proper cookie-based session management (works with RSC + middleware)
+  - Service role key added to .env.local (server-side only — no NEXT_PUBLIC_ prefix)
+  - AdminSidebar: Dashboard, Properties, Inquiries, Visits, Testimonials nav + Sign out
+  - To create admin users: Supabase Dashboard → Authentication → Users → Add user
 
 ---
 
@@ -401,9 +409,9 @@ Building a premium real estate platform with public website, admin dashboard, le
 ## Summary
 
 **Total Phases:** 18  
-**Current Progress:** 27.8% (Phases 1–5 Completed)  
-**Last Phase Completed:** Phase 5 - Supabase Setup ✅  
-**Next Phase:** Phase 6 - Authentication ⏳  
+**Current Progress:** 33.3% (Phases 1–6 Completed)  
+**Last Phase Completed:** Phase 6 - Authentication ✅  
+**Next Phase:** Phase 7 - Property CRUD ⏳  
 **Estimated Duration:** 2-3 weeks total  
 **Completion Date Estimate:** 2026-06-30  
 **Last Updated:** 2026-06-19
