@@ -7,14 +7,14 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#0F172A',
-        secondary: '#1E293B',
-        accent: '#D4A373',
+        primary: '#18181B',    // zinc-900: warm charcoal — replaces cold navy
+        secondary: '#3F3F46',  // zinc-700: clearly distinct hover state
+        accent: '#D97706',     // amber-600: rich true gold — replaces dusty peach
         background: '#FFFFFF',
-        surface: '#F8FAFC',
-        border: '#E2E8F0',
-        text: '#0F172A',
-        muted: '#64748B',
+        surface: '#FAFAF9',    // stone-50: warm ivory — replaces cold blue-gray
+        border: '#E7E5E4',     // stone-200: warm border — replaces cold border
+        text: '#1C1917',       // stone-900: warm near-black — replaces cold navy text
+        muted: '#78716C',      // stone-500: warm muted — replaces cold slate
       },
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],
@@ -27,8 +27,8 @@ module.exports = {
         xl: '24px',
       },
       boxShadow: {
-        card: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
-        hover: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+        card: '0 2px 8px 0 rgba(0, 0, 0, 0.06), 0 1px 2px 0 rgba(0, 0, 0, 0.04)',
+        hover: '0 20px 40px -8px rgba(0, 0, 0, 0.18), 0 4px 8px -2px rgba(0, 0, 0, 0.06)',
       },
     },
   },

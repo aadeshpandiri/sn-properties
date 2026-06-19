@@ -35,11 +35,11 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .btn-secondary {
-    @apply bg-secondary text-white px-6 py-3 rounded-md font-medium hover:bg-primary transition-colors;
+    @apply bg-accent text-white px-6 py-3 rounded-md font-medium hover:opacity-90 transition-colors;
   }
 
   .btn-ghost {
-    @apply text-primary border border-primary px-6 py-3 rounded-md font-medium hover:bg-surface transition-colors;
+    @apply text-primary border-2 border-primary px-6 py-3 rounded-md font-medium hover:bg-surface transition-colors;
   }
 
   .card {
