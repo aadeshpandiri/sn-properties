@@ -18,7 +18,7 @@ export default function PropertyCard({ title, price, bedrooms, bathrooms, area, 
           <span>{bathrooms} Baths</span>
           <span>{area} sqft</span>
         </div>
-        <Button variant="ghost" className="mt-2">View Details</Button>
+        <Button variant="ghost" className="w-full mt-2">View Details</Button>
       </div>
     </article>
   );
