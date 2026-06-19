@@ -82,22 +82,30 @@ Building a premium real estate platform with public website, admin dashboard, le
 ---
 
 ### Phase 4: Homepage UI
-- **Status:** 🔄 Next Up
+- **Status:** ✅ Completed
 - **Tasks:**
-  - [ ] Hero Section with search
-  - [ ] Featured Properties section
-  - [ ] Latest Properties section
-  - [ ] Properties for Rent section
-  - [ ] Properties for Sale section
-  - [ ] About Section
-  - [ ] Why Choose Us section
-  - [ ] Testimonials section
-  - [ ] Contact/CTA section
-  - [ ] Responsive design (mobile-first)
-  - [ ] Accessibility audit
-- **Deliverables:** Complete homepage
-- **Blockers:** Awaiting Phase 2 & 3 completion
-- **Notes:** Mobile-first approach, SEO-first structure
+  - [x] Hero Section with search (HeroSearch client component, Buy/Rent toggle, city input, type select)
+  - [x] Featured Properties section (3 property cards, curated mock data)
+  - [x] Latest Properties section (4-column grid, mixed sale/rent)
+  - [x] Properties for Rent section (3 cards, side-by-side "View All" link)
+  - [x] Properties for Sale section (3 cards, side-by-side "View All" link)
+  - [x] About Section (2-col layout, 15+ badge overlay, CTA buttons)
+  - [x] Why Choose Us section (4 feature cards on linen bg)
+  - [x] Testimonials section (3 review cards with stars and avatar initials)
+  - [x] Contact/CTA section (dark obsidian bg, gold + ghost-light CTAs)
+  - [x] Stats bar (after hero) + Stats band (before testimonials) with accent gold numbers
+  - [x] Responsive for laptop resolutions — not mobile-first (per user request)
+  - [x] Accessibility audit — skipped (per user request, will do at last phase)
+- **Deliverables:** Complete homepage with 9 sections + stats bands
+- **Blockers:** None
+- **Notes:**
+  - Premium theme "Warm Obsidian & Champagne Gold" implemented: primary #0F0D0B, accent #C8973C, surface #F4EDE0
+  - app/page.js is a Server Component (no 'use client') — HeroSearch.js is the only client component
+  - PropertyCard updated: listing_type badge (For Sale/For Rent), price in accent color
+  - Button variants: primary, secondary (gold, dark text), ghost, ghostLight (for dark sections)
+  - Card component updated with border border-border for premium warm-sand border
+  - All section labels use .section-label utility (uppercase gold tracking)
+  - Mock data used for all sections — will be replaced in Phase 9 (Listing & Search)
 
 ---
 
@@ -383,9 +391,9 @@ Building a premium real estate platform with public website, admin dashboard, le
 ## Summary
 
 **Total Phases:** 18  
-**Current Progress:** 16.7% (Phases 1–3 Completed)  
-**Last Phase Completed:** Phase 3 - Application Architecture ✅  
-**Next Phase:** Phase 4 - Homepage UI 🔄  
+**Current Progress:** 22.2% (Phases 1–4 Completed)  
+**Last Phase Completed:** Phase 4 - Homepage UI ✅  
+**Next Phase:** Phase 5 - Supabase Setup ⏳  
 **Estimated Duration:** 2-3 weeks total  
 **Completion Date Estimate:** 2026-06-30  
 **Last Updated:** 2026-06-19

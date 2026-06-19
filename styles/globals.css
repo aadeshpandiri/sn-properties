@@ -35,19 +35,27 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .btn-secondary {
-    @apply bg-accent text-white px-6 py-3 rounded-md font-medium hover:opacity-90 transition-colors;
+    @apply bg-accent text-primary px-6 py-3 rounded-md font-semibold hover:opacity-90 transition-opacity;
   }
 
   .btn-ghost {
     @apply text-primary border-2 border-primary px-6 py-3 rounded-md font-medium hover:bg-surface transition-colors;
   }
 
+  .btn-ghost-light {
+    @apply text-white border-2 border-white px-6 py-3 rounded-md font-medium hover:bg-white/10 transition-colors;
+  }
+
   .card {
-    @apply bg-white rounded-lg shadow-card hover:shadow-hover transition-shadow;
+    @apply bg-white rounded-lg shadow-card hover:shadow-hover transition-shadow border border-border;
   }
 
   .section-title {
     @apply text-4xl font-bold text-primary mb-4;
+  }
+
+  .section-label {
+    @apply text-accent text-sm font-semibold uppercase tracking-[0.25em];
   }
 }
 
