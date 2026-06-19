@@ -124,8 +124,8 @@ snproperties/
 |---|---|---|
 | 1 | Project Setup | ✅ Complete |
 | 2 | UI Components & Page Integration | ✅ Complete |
-| 3 | Application Architecture | 🔄 Next |
-| 4 | Homepage UI (10 sections) | ⏳ Pending |
+| 3 | Application Architecture | ✅ Complete |
+| 4 | Homepage UI (10 sections) | 🔄 Next |
 | 5 | Supabase Setup | ⏳ Pending |
 | 6 | Authentication | ⏳ Pending |
 | 7 | Property CRUD | ⏳ Pending |
@@ -145,7 +145,7 @@ snproperties/
 
 ## Before Starting Any Phase
 
-1. Read `context/PROGRESS_TRACKER_v2.md` to confirm current status
+1. Read `context/PROGRESS_TRACKER.md` to confirm current status (single source of truth)
 2. Read `context/COPILOT_INSTRUCTIONS.md` for full requirements detail
 3. Read relevant context files for the phase (PRD, design system, schema)
 4. Confirm all dependencies from the previous phase are complete
@@ -155,15 +155,27 @@ snproperties/
 
 ## After Every Phase Completion — MANDATORY
 
-**Verify all changes in the live local site before declaring a phase complete.**
+**Two required actions before declaring any phase complete:**
 
-- The nodemon dev server is already running at **http://localhost:3000**
-- **Do NOT open a new terminal or start a new server**
-- Use the existing background server (started with `npm run dev`)
-- Check the output file at `C:\Users\aades\AppData\Local\Temp\claude\...\tasks\*.output` to confirm server is healthy
-- Visually verify the golden path for the feature just built
+### 1. Update Progress Tracker
+Update `context/PROGRESS_TRACKER.md` immediately after completing a phase:
+- Mark phase status as `✅ Completed`
+- Check off all completed tasks `[x]`
+- Add implementation notes (what was built, key decisions)
+- Mark the next phase as `🔄 Next Up`
+- Update the Summary section (Current Progress %, Last Phase Completed, Next Phase)
+- Update `Last Updated` date to today
+
+Also update `CLAUDE.md` Phase Roadmap table to reflect new statuses.
+
+### 2. Verify Live Site
+**Check the running dev server before marking complete — do NOT start a new server.**
+
+- Dev server runs at **http://localhost:3001** (or 3000 if 3001 is free — check server output)
+- Read the background task output file to confirm the server is healthy and compiling cleanly
+- Use `Invoke-WebRequest` to verify all affected pages return expected status codes
 - Check for regressions on pages that existed before the phase
-- Only mark the phase complete after live verification passes
+- Only mark the phase complete after all checks pass
 
 ---
 
@@ -205,10 +217,10 @@ Defined in `.env.local`. Never commit secrets. Reference via `process.env.NEXT_P
 
 | File | When to read |
 |---|---|
+| `context/PROGRESS_TRACKER.md` | Live status — always check before starting work (single source of truth) |
 | `context/COPILOT_INSTRUCTIONS.md` | Full project rules, phase checklist, communication protocol |
 | `context/SN_PROPERTIES_PRD_FULL.md` | Product requirements — what to build and why |
 | `context/SN_PROPERTIES_IMPLEMENTATION_PLAN_FULL.md` | Phase-by-phase implementation roadmap |
 | `context/DATABASE_SCHEMA.md` | Table definitions for Supabase work |
 | `context/UI_UX_DESIGN_SYSTEM.md` | Brand, colors, typography, component list |
 | `context/AI_DEVELOPMENT_RULES.md` | Concise rule list for quick reference |
-| `context/PROGRESS_TRACKER_v2.md` | Live status — always check before starting work |
