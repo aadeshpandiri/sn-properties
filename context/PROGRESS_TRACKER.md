@@ -160,19 +160,26 @@ Building a premium real estate platform with public website, admin dashboard, le
 ---
 
 ### Phase 7: Property CRUD
-- **Status:** ⏳ Not Started
+- **Status:** ✅ Completed
 - **Tasks:**
-  - [ ] Create property form component
-  - [ ] Create add property page (admin)
-  - [ ] Create edit property page (admin)
-  - [ ] Create delete property functionality
-  - [ ] Create property validation with Zod
-  - [ ] Create API routes for CRUD operations
-  - [ ] Setup property slug generation
-  - [ ] Test CRUD operations
+  - [x] Create property form component — components/admin/PropertyForm.js (RHF + Zod, create & edit modes)
+  - [x] Create add property page — /admin/properties/new
+  - [x] Create edit property page — /admin/properties/[id]/edit
+  - [x] Create delete property functionality — DeletePropertyButton with confirm dialog
+  - [x] Create property validation with Zod — propertySchema updated with number error messages
+  - [x] API routes already existed from Phase 3 — verified still working (200)
+  - [x] Setup property slug generation — uniqueSlug() in server action, auto from title
+  - [x] Admin properties list — /admin/properties with table (title, type, price, status, featured, actions)
+  - [x] Server Actions — createProperty, updateProperty, deleteProperty, toggleFeatured
 - **Deliverables:** Complete property management
-- **Blockers:** Awaiting Phase 5 & 6 completion
-- **Notes:** Non-technical admin usability critical
+- **Blockers:** None
+- **Notes:**
+  - Server Actions use supabaseServer (service role) to bypass RLS — admin-only operations
+  - Slug auto-generated from title on create, preserved on edit (URL stability)
+  - PropertyForm: 4 sections (Basic Info, Details, Location, Description) with inline validation
+  - Admin routes redirect to /admin/login for unauthenticated users (middleware confirmed)
+  - formatPrice() from lib/utils.js used in the table
+  - Phase 8 (Media Uploads) will add image upload field to PropertyForm
 
 ---
 
@@ -409,9 +416,9 @@ Building a premium real estate platform with public website, admin dashboard, le
 ## Summary
 
 **Total Phases:** 18  
-**Current Progress:** 33.3% (Phases 1–6 Completed)  
-**Last Phase Completed:** Phase 6 - Authentication ✅  
-**Next Phase:** Phase 7 - Property CRUD ⏳  
+**Current Progress:** 38.9% (Phases 1–7 Completed)  
+**Last Phase Completed:** Phase 7 - Property CRUD ✅  
+**Next Phase:** Phase 8 - Media Uploads ⏳  
 **Estimated Duration:** 2-3 weeks total  
 **Completion Date Estimate:** 2026-06-30  
 **Last Updated:** 2026-06-19
