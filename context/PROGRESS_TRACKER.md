@@ -110,17 +110,27 @@ Building a premium real estate platform with public website, admin dashboard, le
 ---
 
 ### Phase 5: Supabase Setup
-- **Status:** ⏳ Not Started
+- **Status:** ✅ Completed
 - **Tasks:**
-  - [ ] Create Supabase project
-  - [ ] Create database tables (properties, property_images, property_videos, inquiries, schedule_visits, testimonials, users)
-  - [ ] Setup RLS policies
-  - [ ] Create authentication configuration
-  - [ ] Setup storage for images/videos
-  - [ ] Test database connection
-- **Deliverables:** Production-ready database
-- **Blockers:** Supabase account needed
-- **Notes:** Follow DATABASE_SCHEMA.md structure
+  - [x] Create Supabase project (free tier, region: Mumbai)
+  - [x] Create all 7 database tables: properties, property_images, property_videos, inquiries, schedule_visits, testimonials, users
+  - [x] Indexes on listing_type, city, status, featured, property_id, approved
+  - [x] Auto-update updated_at trigger on properties and inquiries
+  - [x] Auto-create user profile trigger on auth.users insert
+  - [x] Row Level Security (RLS) enabled on all tables with correct policies
+  - [x] Update .env.local with Supabase URL and publishable key
+  - [x] Upgrade @supabase/supabase-js 2.39.8 → 2.108.2 (new key format support)
+  - [x] Wrap createClient in try/catch for safe initialization
+  - [x] Test database connection — API routes return 200 with empty data
+- **Deliverables:** Production-ready database connected to the app
+- **Blockers:** None
+- **Notes:**
+  - Supabase project: easmscttakkzqtgyqnma.supabase.co
+  - Key format: sb_publishable_ (new Supabase key type, requires supabase-js v2.50+)
+  - API routes now return {"data":[],"count":0} instead of 503 — fully live
+  - Storage buckets for images/videos will be configured in Phase 8 (Media Uploads)
+  - Service role key not yet configured — needed in Phase 6 for admin auth operations
+  - SQL schema saved at: context/supabase_schema.sql
 
 ---
 
@@ -391,9 +401,9 @@ Building a premium real estate platform with public website, admin dashboard, le
 ## Summary
 
 **Total Phases:** 18  
-**Current Progress:** 22.2% (Phases 1–4 Completed)  
-**Last Phase Completed:** Phase 4 - Homepage UI ✅  
-**Next Phase:** Phase 5 - Supabase Setup ⏳  
+**Current Progress:** 27.8% (Phases 1–5 Completed)  
+**Last Phase Completed:** Phase 5 - Supabase Setup ✅  
+**Next Phase:** Phase 6 - Authentication ⏳  
 **Estimated Duration:** 2-3 weeks total  
 **Completion Date Estimate:** 2026-06-30  
 **Last Updated:** 2026-06-19
