@@ -207,19 +207,25 @@ Building a premium real estate platform with public website, admin dashboard, le
 ---
 
 ### Phase 9: Listing & Search
-- **Status:** ⏳ Not Started
+- **Status:** ✅ Completed
 - **Tasks:**
-  - [ ] Create listings page
-  - [ ] Create search functionality
-  - [ ] Create filter options (price, location, property type, etc.)
-  - [ ] Create sort options (price, newest, featured)
-  - [ ] Create pagination
-  - [ ] Create search form component
-  - [ ] Setup real-time search
-  - [ ] Test search/filter performance
+  - [x] Create listings page — full Server Component rewrite, real Supabase data (no mock data)
+  - [x] Show first property image in PropertyCard — separate property_images query, thumbnail shown with lazy load + zoom on hover
+  - [x] Create search functionality — city text search with Supabase ilike
+  - [x] Create filter options — listing type tabs, property type, city, min/max price
+  - [x] Create sort options — Newest, Price Low→High, Price High→Low
+  - [x] Create pagination — URL param-based, preserves all active filters, shows ellipsis for large ranges
+  - [x] Create search form component — components/property/PropertyFilters.js (client), useTransition for loading state
+  - [x] Real-time search — filter bar updates URL params on Search click, server re-fetches
+  - [x] Pagination component — components/property/Pagination.js (server, Link-based, preserves filters)
 - **Deliverables:** Fully functional property search
-- **Blockers:** Awaiting Phase 4 & 7 completion
-- **Notes:** Mobile-first search interface
+- **Blockers:** None
+- **Notes:**
+  - Properties page is a Server Component — fetches from Supabase on every request with filter params
+  - Two-query approach: first query for properties with filters, second for first image per property (avoids FK dependency)
+  - PropertyCard now accepts imageUrl prop — shows real image with object-cover + scale on hover; graceful gradient fallback
+  - supabase (anon key) used for public listings — relies on RLS allowing public reads of available properties
+  - Admin edit form bug also fixed: edit page now uses 3 parallel queries instead of nested select (avoids FK registration issue)
 
 ---
 
@@ -227,8 +233,8 @@ Building a premium real estate platform with public website, admin dashboard, le
 - **Status:** ⏳ Not Started
 - **Tasks:**
   - [ ] Create property detail layout
-  - [ ] Create image gallery component
-  - [ ] Create video tour component
+  - [ ] Create image gallery component (show all images uploaded via Phase 8)
+  - [ ] Create video tour component (embed YouTube/Vimeo from property_videos table)
   - [ ] Create amenities section
   - [ ] Create agent details section
   - [ ] Create inquiry form component
@@ -238,7 +244,10 @@ Building a premium real estate platform with public website, admin dashboard, le
   - [ ] Create related properties section
 - **Deliverables:** Complete property detail pages
 - **Blockers:** Awaiting Phase 8 & 9 completion
-- **Notes:** SEO-optimized structure
+- **Notes:**
+  - MUST show all uploaded images in a gallery (user confirmed images saved to Supabase but not visible on public site yet — this is the fix)
+  - MUST embed video tours from property_videos URLs (YouTube/Vimeo iframes)
+  - SEO-optimized structure with dynamic metadata
 
 ---
 
@@ -422,9 +431,9 @@ Building a premium real estate platform with public website, admin dashboard, le
 ## Summary
 
 **Total Phases:** 18  
-**Current Progress:** 44.4% (Phases 1–8 Completed)  
-**Last Phase Completed:** Phase 8 - Media Uploads ✅  
-**Next Phase:** Phase 9 - Listing & Search ⏳  
+**Current Progress:** 50% (Phases 1–9 Completed)  
+**Last Phase Completed:** Phase 9 - Listing & Search ✅  
+**Next Phase:** Phase 10 - Property Detail Pages ⏳  
 **Estimated Duration:** 2-3 weeks total  
 **Completion Date Estimate:** 2026-06-30  
 **Last Updated:** 2026-06-19

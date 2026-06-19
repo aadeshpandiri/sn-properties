@@ -8,13 +8,20 @@ export const metadata = { title: 'Edit Property — SN Properties Admin' };
 
 async function getProperty(id) {
   if (!supabaseServer) return null;
-  const { data, error } = await supabaseServer
-    .from('properties')
-    .select('*, property_images(id, image_url), property_videos(id, video_url)')
-    .eq('id', id)
-    .single();
-  if (error) return null;
-  return data;
+
+  const [propertyRes, imagesRes, videosRes] = await Promise.all([
+    supabaseServer.from('properties').select('*').eq('id', id).single(),
+    supabaseServer.from('property_images').select('id, image_url').eq('property_id', id).order('created_at'),
+    supabaseServer.from('property_videos').select('id, video_url').eq('property_id', id).order('created_at'),
+  ]);
+
+  if (propertyRes.error) return null;
+
+  return {
+    ...propertyRes.data,
+    property_images: imagesRes.data ?? [],
+    property_videos: videosRes.data ?? [],
+  };
 }
 
 export default async function EditPropertyPage({ params }) {

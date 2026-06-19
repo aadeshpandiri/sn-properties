@@ -11,6 +11,7 @@ export default function PropertyCard({
   city,
   status,
   listing_type,
+  imageUrl,
   className = '',
 }) {
   const listingLabel = listing_type === 'rent' ? 'For Rent' : 'For Sale';
@@ -20,16 +21,23 @@ export default function PropertyCard({
 
   return (
     <article className={`card overflow-hidden group ${className}`}>
-      {/* Image placeholder with gradient */}
+      {/* Image */}
       <div className="relative h-52 bg-gradient-to-br from-surface to-border overflow-hidden">
-        <div className="absolute inset-0 bg-primary/5 group-hover:bg-primary/10 transition-colors" />
-        {/* Listing type badge */}
+        {imageUrl ? (
+          <img
+            src={imageUrl}
+            alt={title}
+            loading="lazy"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+        ) : (
+          <div className="absolute inset-0 bg-primary/5 group-hover:bg-primary/10 transition-colors" />
+        )}
         <span className={`absolute top-4 left-4 text-xs font-semibold px-3 py-1 rounded-full ${listingStyle}`}>
           {listingLabel}
         </span>
-        {/* Status badge */}
         {status && (
-          <span className="absolute top-4 right-4 text-xs font-medium px-3 py-1 rounded-full bg-white/90 text-muted">
+          <span className="absolute top-4 right-4 text-xs font-medium px-3 py-1 rounded-full bg-white/90 text-muted capitalize">
             {status}
           </span>
         )}
