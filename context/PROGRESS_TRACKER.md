@@ -359,25 +359,8 @@ Building a premium real estate platform with public website, admin dashboard, le
 
 ---
 
-### Phase 15: Testing
-- **Status:** 🔄 Next Up
-- **Tasks:**
-  - [ ] Setup testing framework (Jest/Vitest)
-  - [ ] Create unit tests for components
-  - [ ] Create integration tests for API routes
-  - [ ] Create E2E tests (Cypress/Playwright)
-  - [ ] Accessibility testing (axe)
-  - [ ] Performance testing
-  - [ ] Security testing
-  - [ ] Load testing
-- **Deliverables:** Test coverage > 80%
-- **Blockers:** Awaiting development phases
-- **Notes:** Continuous testing throughout
-
----
-
-### Phase 16: Deployment
-- **Status:** ⏳ Not Started
+### Phase 15: Deployment
+- **Status:** ⏳ Not Started (deferred — not in scope for current sprint)
 - **Tasks:**
   - [ ] Setup production environment
   - [ ] Configure deployment pipeline (CI/CD)
@@ -388,42 +371,37 @@ Building a premium real estate platform with public website, admin dashboard, le
   - [ ] Deploy to production
   - [ ] Post-deployment testing
 - **Deliverables:** Live production application
-- **Blockers:** Awaiting Phase 15 completion
-- **Notes:** -
+- **Notes:** Will be tackled when the platform is ready for go-live
 
 ---
 
-### Phase 17: Performance Optimization
-- **Status:** ⏳ Not Started
-- **Tasks:**
-  - [ ] Image optimization and CDN setup
-  - [ ] Code splitting and lazy loading
-  - [ ] Database query optimization
-  - [ ] Caching strategy (browser/server)
-  - [ ] API rate limiting
-  - [ ] Lighthouse score optimization
-  - [ ] Core Web Vitals optimization
-  - [ ] Server-side rendering optimization
-- **Deliverables:** Optimized performance
-- **Blockers:** Awaiting Phase 16 deployment
-- **Notes:** Ongoing optimization
+## Future Items
 
----
+> Moved out of the active roadmap. These will be revisited post-launch based on priority.
 
-### Phase 18: Future Enhancements
-- **Status:** ⏳ Not Started
-- **Tasks:**
-  - [ ] CRM integration
-  - [ ] Payment integration (if needed)
-  - [ ] Mobile app (if needed)
-  - [ ] Advanced analytics
-  - [ ] AI-powered recommendations
-  - [ ] Chatbot support
-  - [ ] API for third-party integrations
-  - [ ] Additional features based on feedback
-- **Deliverables:** Enhanced platform
-- **Blockers:** Post-launch feedback required
-- **Notes:** Future roadmap based on user feedback
+### Testing
+- Setup testing framework (Jest/Vitest)
+- Unit tests for components
+- Integration tests for API routes
+- E2E tests (Cypress/Playwright)
+- Accessibility testing (axe)
+- Performance + security + load testing
+
+### Performance Optimization
+- Image optimization and CDN setup
+- Code splitting and lazy loading
+- Database query optimization
+- Caching strategy (browser/server)
+- Lighthouse / Core Web Vitals optimization
+
+### Future Enhancements
+- CRM integration
+- Payment integration
+- Mobile app
+- Advanced analytics
+- AI-powered property recommendations
+- Chatbot support
+- Third-party API integrations
 
 ---
 

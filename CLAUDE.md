@@ -136,10 +136,10 @@ snproperties/
 | 12 | Testimonials | ✅ Complete |
 | 13 | Content Management | ✅ Complete |
 | 14 | SEO | ✅ Complete |
-| 15 | Testing | 🔄 Next |
-| 16 | Deployment | ⏳ Pending |
-| 17 | Performance Optimization | ⏳ Pending |
-| 18 | Future Enhancements | ⏳ Pending |
+| 15 | Deployment | ⏳ Deferred |
+| — | Testing | 🔮 Future |
+| — | Performance Optimization | 🔮 Future |
+| — | Future Enhancements | 🔮 Future |
 
 ---
 
