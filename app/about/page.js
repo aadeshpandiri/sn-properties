@@ -1,6 +1,16 @@
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 
+export const metadata = {
+  title: 'About Us — SN Properties',
+  description: 'Learn about SN Properties — our story, mission, and team. Over 15 years helping clients find their perfect property in the Bay Area.',
+  openGraph: {
+    title: 'About SN Properties',
+    description: 'Over 15 years of expertise helping clients buy, sell, and rent premium properties.',
+    type: 'website',
+  },
+};
+
 export default function AboutPage() {
   const team = [
     {

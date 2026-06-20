@@ -6,6 +6,8 @@ import ImageGallery from '@/components/property/ImageGallery';
 import VideoTour from '@/components/property/VideoTour';
 import PropertySidebar from '@/components/property/PropertySidebar';
 import PropertyCard from '@/components/property/PropertyCard';
+import PropertySchema from '@/components/seo/PropertySchema';
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 
 // ── Data fetching ─────────────────────────────────────────────────────────
 
@@ -102,6 +104,14 @@ export default async function PropertyDetailPage({ params }) {
 
   return (
     <main className="container-custom py-10">
+
+      {/* JSON-LD structured data */}
+      <PropertySchema property={property} />
+      <BreadcrumbSchema items={[
+        { name: 'Home', href: '/' },
+        { name: 'Properties', href: '/properties' },
+        { name: property.title },
+      ]} />
 
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-sm text-muted mb-6">

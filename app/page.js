@@ -4,6 +4,7 @@ import Card from '@/components/ui/Card';
 import PropertyCard from '@/components/property/PropertyCard';
 import StarRating from '@/components/ui/StarRating';
 import HeroSearch from '@/components/home/HeroSearch';
+import OrganizationSchema from '@/components/seo/OrganizationSchema';
 import { supabase } from '@/lib/supabase';
 import { formatPrice } from '@/lib/utils';
 
@@ -105,6 +106,9 @@ export default async function Home() {
 
   return (
     <main>
+
+      {/* JSON-LD structured data */}
+      <OrganizationSchema />
 
       {/* ── 1. HERO ─────────────────────────────────────────────── */}
       <section className="bg-primary py-24 lg:py-36">

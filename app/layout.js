@@ -5,15 +5,35 @@ import Footer from '@/components/Footer';
 import Providers from '@/components/Providers';
 
 export const metadata = {
-  title: 'SN Properties - Premium Real Estate Platform',
-  description: 'Discover premium properties for sale and rent. Professional real estate platform with advanced search and detailed property information.',
-  keywords: 'real estate, properties, buy, rent, property listings',
-  openGraph: {
-    title: 'SN Properties - Premium Real Estate Platform',
-    description: 'Discover premium properties for sale and rent.',
-    type: 'website',
-    url: process.env.NEXT_PUBLIC_APP_URL,
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://snproperties.com'),
+  title: {
+    default: 'SN Properties — Premium Real Estate Platform',
+    template: '%s | SN Properties',
   },
+  description: 'Discover premium properties for sale and rent in the San Francisco Bay Area. Expert guidance, transparent pricing, and exceptional service.',
+  keywords: ['real estate', 'properties for sale', 'properties for rent', 'San Francisco', 'luxury homes', 'apartments', 'villas'],
+  authors: [{ name: 'SN Properties' }],
+  openGraph: {
+    title: 'SN Properties — Premium Real Estate Platform',
+    description: 'Discover premium properties for sale and rent. Expert guidance, transparent pricing, and exceptional service.',
+    type: 'website',
+    url: process.env.NEXT_PUBLIC_APP_URL || 'https://snproperties.com',
+    siteName: 'SN Properties',
+    locale: 'en_US',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'SN Properties — Premium Real Estate Platform',
+    description: 'Discover premium properties for sale and rent. Expert guidance and exceptional service.',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true },
+  },
+  ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION && {
+    verification: { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION },
+  }),
 };
 
 export default async function RootLayout({ children }) {

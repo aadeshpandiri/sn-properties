@@ -335,25 +335,32 @@ Building a premium real estate platform with public website, admin dashboard, le
 ---
 
 ### Phase 14: SEO
-- **Status:** 🔄 Next Up
+- **Status:** ✅ Completed
 - **Tasks:**
-  - [ ] Setup dynamic metadata generation
-  - [ ] Create sitemap.xml
-  - [ ] Create robots.txt
-  - [ ] Setup OpenGraph tags
-  - [ ] Setup structured data (JSON-LD)
-  - [ ] Create breadcrumb navigation
-  - [ ] Setup Google Search Console integration
-  - [ ] Create meta tags for all pages
-  - [ ] SEO audit and optimization
-- **Deliverables:** SEO-optimized platform
-- **Blockers:** Awaiting Phase 10 completion
-- **Notes:** SEO-first approach throughout
+  - [x] Setup dynamic metadata generation — generateMetadata() on property detail; title template in root layout
+  - [x] Create sitemap.xml — app/sitemap.js (Next.js App Router); includes static pages + all available properties dynamically
+  - [x] Create robots.txt — app/robots.js; allows all public routes, disallows /admin/*
+  - [x] Setup OpenGraph tags — root layout has full OG config; property detail has per-property OG image
+  - [x] Setup structured data (JSON-LD) — OrganizationSchema (homepage), PropertySchema (detail pages), BreadcrumbSchema (listing + detail)
+  - [x] Create breadcrumb navigation — BreadcrumbSchema JSON-LD on properties + detail pages; visual breadcrumb already on detail page
+  - [x] Setup Google Search Console integration — NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION env var supported in root layout
+  - [x] Create meta tags for all pages — metadata export added to all pages including about (was missing)
+  - [x] SEO audit and optimization — metadataBase set in root layout; title template; robots directives; Twitter cards
+- **Deliverables:** Fully SEO-optimised platform with sitemap, robots.txt, OG tags, and JSON-LD
+- **Notes:**
+  - app/sitemap.js — dynamic, fetches available property IDs from Supabase at request time
+  - app/robots.js — disallows /admin/, /admin/login, /admin/reset-password, /admin/forgot-password
+  - components/seo/OrganizationSchema.js — RealEstateAgent schema on homepage
+  - components/seo/PropertySchema.js — Product schema with offers, additionalProperty on detail pages
+  - components/seo/BreadcrumbSchema.js — BreadcrumbList schema, shared across listing and detail pages
+  - Root layout: metadataBase, title template (%s | SN Properties), Twitter card, robots directives
+  - Google Search Console: add NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=your_code to .env.local to activate verification meta tag
+  - Sitemap and robots.txt verified at /sitemap.xml and /robots.txt (both return 200)
 
 ---
 
 ### Phase 15: Testing
-- **Status:** ⏳ Not Started
+- **Status:** 🔄 Next Up
 - **Tasks:**
   - [ ] Setup testing framework (Jest/Vitest)
   - [ ] Create unit tests for components

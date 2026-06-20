@@ -2,6 +2,7 @@ import Link from 'next/link';
 import PropertyCard from '@/components/property/PropertyCard';
 import PropertyFilters from '@/components/property/PropertyFilters';
 import Pagination from '@/components/property/Pagination';
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import { supabase } from '@/lib/supabase';
 import { formatPrice } from '@/lib/utils';
 import { PAGINATION_LIMIT } from '@/lib/constants';
@@ -77,6 +78,11 @@ export default async function PropertiesPage({ searchParams }) {
 
   return (
     <main className="container-custom py-12">
+
+      <BreadcrumbSchema items={[
+        { name: 'Home', href: '/' },
+        { name: 'Properties' },
+      ]} />
 
       {/* Header */}
       <div className="mb-10">
