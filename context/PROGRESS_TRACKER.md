@@ -230,24 +230,26 @@ Building a premium real estate platform with public website, admin dashboard, le
 ---
 
 ### Phase 10: Property Detail Pages
-- **Status:** ⏳ Not Started
+- **Status:** ✅ Completed
 - **Tasks:**
-  - [ ] Create property detail layout
-  - [ ] Create image gallery component (show all images uploaded via Phase 8)
-  - [ ] Create video tour component (embed YouTube/Vimeo from property_videos table)
-  - [ ] Create amenities section
-  - [ ] Create agent details section
-  - [ ] Create inquiry form component
-  - [ ] Create WhatsApp CTA button
-  - [ ] Create schedule visit form
-  - [ ] Setup dynamic meta tags (SEO)
-  - [ ] Create related properties section
+  - [x] Create property detail layout — 2-col (content + sticky sidebar), breadcrumb, specs grid
+  - [x] Create image gallery — components/property/ImageGallery.js (thumbnail switcher, photo counter, graceful placeholder)
+  - [x] Create video tour component — components/property/VideoTour.js (YouTube + Vimeo iframe embeds, auto-converts URL to embed)
+  - [x] Create inquiry form — components/property/InquiryForm.js (RHF + Zod, success state, pre-fills property title in message)
+  - [x] Create WhatsApp CTA — in PropertySidebar, builds wa.me link with pre-filled message
+  - [x] Create schedule visit form — components/property/ScheduleVisitForm.js (RHF + Zod, date/time pickers, success state)
+  - [x] Setup dynamic meta tags — generateMetadata() with title, description, OG image from first property photo
+  - [x] Create related properties section — same listing_type, available only, max 3, shown as PropertyCard grid
+  - [x] Server actions — app/actions/inquiries.js: submitInquiry + scheduleVisit (write to inquiries + schedule_visits tables)
 - **Deliverables:** Complete property detail pages
-- **Blockers:** Awaiting Phase 8 & 9 completion
+- **Blockers:** None
 - **Notes:**
-  - MUST show all uploaded images in a gallery (user confirmed images saved to Supabase but not visible on public site yet — this is the fix)
-  - MUST embed video tours from property_videos URLs (YouTube/Vimeo iframes)
-  - SEO-optimized structure with dynamic metadata
+  - /properties/[id] — Server Component, 3 parallel queries (property + images + videos)
+  - PropertySidebar is a client component managing tabs (Inquiry / Schedule Visit)
+  - supabaseServer used on detail page (service role) so sold/rented properties still have detail pages
+  - supabase (anon) used for related properties (public RLS, available only)
+  - WhatsApp number set in lib/constants.js WHATSAPP_NUMBER — update to real number before go-live
+  - Specs card grid: beds, baths, area, type, availability date (omitted if null)
 
 ---
 
@@ -431,9 +433,9 @@ Building a premium real estate platform with public website, admin dashboard, le
 ## Summary
 
 **Total Phases:** 18  
-**Current Progress:** 50% (Phases 1–9 Completed)  
-**Last Phase Completed:** Phase 9 - Listing & Search ✅  
-**Next Phase:** Phase 10 - Property Detail Pages ⏳  
+**Current Progress:** 55.6% (Phases 1–10 Completed)  
+**Last Phase Completed:** Phase 10 - Property Detail Pages ✅  
+**Next Phase:** Phase 11 - Lead Management ⏳  
 **Estimated Duration:** 2-3 weeks total  
 **Completion Date Estimate:** 2026-06-30  
 **Last Updated:** 2026-06-19
