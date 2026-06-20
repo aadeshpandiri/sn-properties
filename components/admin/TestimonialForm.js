@@ -15,11 +15,11 @@ export default function TestimonialForm({ testimonial, action }) {
   const { register, handleSubmit, watch, setValue, formState: { errors, isSubmitting } } = useForm({
     resolver: zodResolver(testimonialSchema),
     defaultValues: {
-      name: testimonial?.name ?? '',
-      rating: testimonial?.rating ?? 5,
-      review: testimonial?.review ?? '',
+      name:      testimonial?.name      ?? '',
+      rating:    testimonial?.rating    ?? 5,
+      review:    testimonial?.review    ?? '',
       image_url: testimonial?.image_url ?? '',
-      approved: testimonial?.approved ?? false,
+      approved:  testimonial?.approved  ?? false,
     },
   });
 
@@ -43,19 +43,16 @@ export default function TestimonialForm({ testimonial, action }) {
         </div>
       )}
 
-      {/* Name */}
-      <div>
-        <label className="block text-sm font-medium text-primary mb-1.5">
-          Client Name <span className="text-red-500">*</span>
-        </label>
-        <Input
-          {...register('name')}
-          placeholder="e.g. Sarah Mitchell"
-          error={errors.name?.message}
-        />
-      </div>
+      <Input
+        id="name"
+        label="Client Name"
+        register={register}
+        required
+        placeholder="e.g. Sarah Mitchell"
+        error={errors.name}
+      />
 
-      {/* Star rating */}
+      {/* Star rating — uses hidden input so native spread is fine */}
       <div>
         <label className="block text-sm font-medium text-primary mb-2">
           Rating <span className="text-red-500">*</span>
@@ -79,32 +76,24 @@ export default function TestimonialForm({ testimonial, action }) {
         {errors.rating && <p className="text-red-500 text-xs mt-1">{errors.rating.message}</p>}
       </div>
 
-      {/* Review */}
-      <div>
-        <label className="block text-sm font-medium text-primary mb-1.5">
-          Review <span className="text-red-500">*</span>
-        </label>
-        <TextArea
-          {...register('review')}
-          rows={4}
-          placeholder="Share what the client said about their experience..."
-          error={errors.review?.message}
-        />
-      </div>
+      <TextArea
+        id="review"
+        label="Review"
+        register={register}
+        required
+        rows={4}
+        placeholder="Share what the client said about their experience..."
+        error={errors.review}
+      />
 
-      {/* Image URL */}
-      <div>
-        <label className="block text-sm font-medium text-primary mb-1.5">
-          Client Photo URL <span className="text-muted text-xs font-normal">(optional)</span>
-        </label>
-        <Input
-          {...register('image_url')}
-          placeholder="https://example.com/photo.jpg"
-          error={errors.image_url?.message}
-        />
-      </div>
+      <Input
+        id="image_url"
+        label="Client Photo URL (optional)"
+        register={register}
+        placeholder="https://example.com/photo.jpg"
+        error={errors.image_url}
+      />
 
-      {/* Approved */}
       <div className="flex items-center gap-3">
         <input
           type="checkbox"
@@ -117,7 +106,6 @@ export default function TestimonialForm({ testimonial, action }) {
         </label>
       </div>
 
-      {/* Actions */}
       <div className="flex items-center gap-3 pt-2">
         <button
           type="submit"

@@ -49,52 +49,78 @@ export default function SettingsForm({ settings, action }) {
         </div>
       )}
 
-      {/* Contact info */}
       <div>
         <h2 className="text-base font-semibold text-primary mb-4 pb-2 border-b border-border">
           Contact Information
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <div>
-            <label className="block text-sm font-medium text-primary mb-1.5">Phone Number</label>
-            <Input {...register('phone')} placeholder="(415) 555-0123" error={errors.phone?.message} />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-primary mb-1.5">Email Address</label>
-            <Input {...register('email')} type="email" placeholder="info@snproperties.com" error={errors.email?.message} />
-          </div>
+          <Input
+            id="phone"
+            label="Phone Number"
+            register={register}
+            required
+            placeholder="(415) 555-0123"
+            error={errors.phone}
+          />
+          <Input
+            id="email"
+            label="Email Address"
+            type="email"
+            register={register}
+            required
+            placeholder="info@snproperties.com"
+            error={errors.email}
+          />
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-primary mb-1.5">Office Address</label>
-            <Input {...register('address')} placeholder="123 Market Street, San Francisco, CA 94103" error={errors.address?.message} />
+            <Input
+              id="address"
+              label="Office Address"
+              register={register}
+              required
+              placeholder="123 Market Street, San Francisco, CA 94103"
+              error={errors.address}
+            />
           </div>
-          <div>
-            <label className="block text-sm font-medium text-primary mb-1.5">
-              WhatsApp Number
-              <span className="text-muted text-xs font-normal ml-1">(with country code, no + or spaces)</span>
-            </label>
-            <Input {...register('whatsapp')} placeholder="14155550123" error={errors.whatsapp?.message} />
-          </div>
+          <Input
+            id="whatsapp"
+            label="WhatsApp Number (with country code, no + or spaces)"
+            register={register}
+            required
+            placeholder="14155550123"
+            error={errors.whatsapp}
+          />
         </div>
       </div>
 
-      {/* Business hours */}
       <div>
         <h2 className="text-base font-semibold text-primary mb-4 pb-2 border-b border-border">
           Business Hours
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <div>
-            <label className="block text-sm font-medium text-primary mb-1.5">Weekdays</label>
-            <Input {...register('hours_weekday')} placeholder="Mon – Fri: 9:00 AM – 6:00 PM" error={errors.hours_weekday?.message} />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-primary mb-1.5">Saturday</label>
-            <Input {...register('hours_saturday')} placeholder="Sat: 10:00 AM – 4:00 PM" error={errors.hours_saturday?.message} />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-primary mb-1.5">Sunday</label>
-            <Input {...register('hours_sunday')} placeholder="Sun: Closed" error={errors.hours_sunday?.message} />
-          </div>
+          <Input
+            id="hours_weekday"
+            label="Weekdays"
+            register={register}
+            required
+            placeholder="Mon – Fri: 9:00 AM – 6:00 PM"
+            error={errors.hours_weekday}
+          />
+          <Input
+            id="hours_saturday"
+            label="Saturday"
+            register={register}
+            required
+            placeholder="Sat: 10:00 AM – 4:00 PM"
+            error={errors.hours_saturday}
+          />
+          <Input
+            id="hours_sunday"
+            label="Sunday"
+            register={register}
+            required
+            placeholder="Sun: Closed"
+            error={errors.hours_sunday}
+          />
         </div>
       </div>
 

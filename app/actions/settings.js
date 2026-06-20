@@ -59,6 +59,17 @@ export async function createFaq(data) {
   const parsed = faqSchema.safeParse(data);
   if (!parsed.success) return { error: parsed.error.errors[0].message };
 
+  // Shift any existing FAQs at this position or higher up by 1
+  const { data: toShift } = await db()
+    .from('faqs')
+    .select('id, order_index')
+    .gte('order_index', parsed.data.order_index);
+
+  if (toShift?.length > 0) {
+    const shifted = toShift.map((f) => ({ id: f.id, order_index: f.order_index + 1 }));
+    await db().from('faqs').upsert(shifted, { onConflict: 'id' });
+  }
+
   const { error } = await db().from('faqs').insert(parsed.data);
   if (error) return { error: error.message };
 
@@ -69,6 +80,44 @@ export async function createFaq(data) {
 export async function updateFaq(id, data) {
   const parsed = faqSchema.safeParse(data);
   if (!parsed.success) return { error: parsed.error.errors[0].message };
+
+  // Get current order_index so we can detect a position change
+  const { data: current } = await db()
+    .from('faqs')
+    .select('order_index')
+    .eq('id', id)
+    .single();
+
+  const oldIndex = current?.order_index;
+  const newIndex = parsed.data.order_index;
+
+  if (oldIndex !== undefined && oldIndex !== newIndex) {
+    if (newIndex < oldIndex) {
+      // Moving up: shift FAQs between newIndex and oldIndex-1 down by 1
+      const { data: toShift } = await db()
+        .from('faqs')
+        .select('id, order_index')
+        .gte('order_index', newIndex)
+        .lt('order_index', oldIndex)
+        .neq('id', id);
+      if (toShift?.length > 0) {
+        const shifted = toShift.map((f) => ({ id: f.id, order_index: f.order_index + 1 }));
+        await db().from('faqs').upsert(shifted, { onConflict: 'id' });
+      }
+    } else {
+      // Moving down: shift FAQs between oldIndex+1 and newIndex up by 1
+      const { data: toShift } = await db()
+        .from('faqs')
+        .select('id, order_index')
+        .gt('order_index', oldIndex)
+        .lte('order_index', newIndex)
+        .neq('id', id);
+      if (toShift?.length > 0) {
+        const shifted = toShift.map((f) => ({ id: f.id, order_index: f.order_index - 1 }));
+        await db().from('faqs').upsert(shifted, { onConflict: 'id' });
+      }
+    }
+  }
 
   const { error } = await db().from('faqs').update(parsed.data).eq('id', id);
   if (error) return { error: error.message };

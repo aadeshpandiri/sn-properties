@@ -11,7 +11,7 @@ import TextArea from '@/components/forms/TextArea';
 const schema = z.object({
   question:    z.string().min(5, 'Question is required'),
   answer:      z.string().min(10, 'Answer is required'),
-  order_index: z.number().int().min(0).default(0),
+  order_index: z.coerce.number().int().min(0).default(0),
   active:      z.boolean().default(true),
 });
 
@@ -31,9 +31,7 @@ export default function FaqForm({ faq, action }) {
 
   const onSubmit = async (data) => {
     setServerError('');
-    const result = faq
-      ? await action(faq.id, data)
-      : await action(data);
+    const result = faq ? await action(faq.id, data) : await action(data);
     if (result?.error) { setServerError(result.error); return; }
     router.push('/admin/faqs');
   };
@@ -47,39 +45,35 @@ export default function FaqForm({ faq, action }) {
         </div>
       )}
 
-      <div>
-        <label className="block text-sm font-medium text-primary mb-1.5">
-          Question <span className="text-red-500">*</span>
-        </label>
-        <Input {...register('question')} placeholder="What areas do you cover?" error={errors.question?.message} />
-      </div>
+      <Input
+        id="question"
+        label="Question"
+        register={register}
+        required
+        placeholder="What areas do you cover?"
+        error={errors.question}
+      />
 
-      <div>
-        <label className="block text-sm font-medium text-primary mb-1.5">
-          Answer <span className="text-red-500">*</span>
-        </label>
-        <TextArea
-          {...register('answer')}
-          rows={5}
-          placeholder="We cover the entire San Francisco Bay Area including..."
-          error={errors.answer?.message}
-        />
-      </div>
+      <TextArea
+        id="answer"
+        label="Answer"
+        register={register}
+        required
+        rows={5}
+        placeholder="We cover the entire San Francisco Bay Area including..."
+        error={errors.answer}
+      />
 
       <div className="grid grid-cols-2 gap-5">
-        <div>
-          <label className="block text-sm font-medium text-primary mb-1.5">
-            Display Order
-            <span className="text-muted text-xs font-normal ml-1">(lower = first)</span>
-          </label>
-          <Input
-            {...register('order_index', { valueAsNumber: true })}
-            type="number"
-            min="0"
-            placeholder="0"
-            error={errors.order_index?.message}
-          />
-        </div>
+        <Input
+          id="order_index"
+          label="Display Order"
+          type="number"
+          register={register}
+          min="0"
+          placeholder="0"
+          error={errors.order_index}
+        />
         <div className="flex items-end pb-1">
           <label className="flex items-center gap-3 cursor-pointer">
             <input
