@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import PropertyCard from '@/components/property/PropertyCard';
+import StarRating from '@/components/ui/StarRating';
 import HeroSearch from '@/components/home/HeroSearch';
 import { supabase } from '@/lib/supabase';
 import { formatPrice } from '@/lib/utils';
@@ -48,13 +49,18 @@ async function getHomeProperties() {
   return { featured, latest, rentals, forSale };
 }
 
-// ── Static content ────────────────────────────────────────────────────────
+async function getApprovedTestimonials() {
+  if (!supabase) return [];
+  const { data } = await supabase
+    .from('testimonials')
+    .select('id, name, rating, review, image_url')
+    .eq('approved', true)
+    .order('created_at', { ascending: false })
+    .limit(3);
+  return data ?? [];
+}
 
-const testimonials = [
-  { id: 1, name: 'Jennifer & Mark Davis', role: 'First-Time Homebuyers', rating: 5, review: 'SN Properties turned what seemed like an impossible dream into reality. Their team guided us through every step with patience and expertise. We could not be happier with our new home.' },
-  { id: 2, name: 'Robert Chen', role: 'Property Investor', rating: 5, review: 'As an investor, I rely on accurate market insights and reliable execution. SN Properties delivered on both fronts. Their portfolio of listings and negotiation skills are unmatched.' },
-  { id: 3, name: 'Sarah Mitchell', role: 'Corporate Tenant', rating: 5, review: 'Found the perfect rental for our family within a week of contacting SN Properties. The process was seamless and transparent from start to finish. Highly recommended.' },
-];
+// ── Static content ────────────────────────────────────────────────────────
 
 const features = [
   { icon: '🏆', title: 'Expert Guidance', description: 'Our experienced team provides personalized recommendations tailored to your needs and budget.' },
@@ -92,7 +98,10 @@ function PropertySection({ properties }) {
 }
 
 export default async function Home() {
-  const { featured, latest, rentals, forSale } = await getHomeProperties();
+  const [{ featured, latest, rentals, forSale }, testimonials] = await Promise.all([
+    getHomeProperties(),
+    getApprovedTestimonials(),
+  ]);
 
   return (
     <main>
@@ -294,40 +303,39 @@ export default async function Home() {
       </section>
 
       {/* ── 8. TESTIMONIALS ─────────────────────────────────────── */}
-      <section className="py-20 bg-background">
-        <div className="container-custom">
-          <div className="text-center mb-14">
-            <span className="section-label">Client Stories</span>
-            <h2 className="text-4xl font-bold text-primary mt-3">What Our Clients Say</h2>
-            <p className="text-muted mt-3 max-w-xl mx-auto">
-              Real experiences from clients who found their perfect property with us
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((t) => (
-              <Card key={t.id} className="p-8 flex flex-col">
-                <div className="flex gap-0.5 mb-5">
-                  {Array.from({ length: t.rating }).map((_, i) => (
-                    <span key={i} className="text-accent text-lg">★</span>
-                  ))}
-                </div>
-                <p className="text-muted leading-relaxed mb-6 italic flex-1">
-                  &ldquo;{t.review}&rdquo;
-                </p>
-                <div className="flex items-center gap-3 border-t border-border pt-5">
-                  <div className="w-10 h-10 bg-surface rounded-full flex items-center justify-center text-primary font-bold text-sm flex-shrink-0">
-                    {t.name.charAt(0)}
-                  </div>
-                  <div>
+      {testimonials.length > 0 && (
+        <section className="py-20 bg-background">
+          <div className="container-custom">
+            <div className="text-center mb-14">
+              <span className="section-label">Client Stories</span>
+              <h2 className="text-4xl font-bold text-primary mt-3">What Our Clients Say</h2>
+              <p className="text-muted mt-3 max-w-xl mx-auto">
+                Real experiences from clients who found their perfect property with us
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {testimonials.map((t) => (
+                <Card key={t.id} className="p-8 flex flex-col">
+                  <StarRating rating={t.rating} size="text-xl" />
+                  <p className="text-muted leading-relaxed my-5 italic flex-1">
+                    &ldquo;{t.review}&rdquo;
+                  </p>
+                  <div className="flex items-center gap-3 border-t border-border pt-5">
+                    <div className="w-10 h-10 bg-surface rounded-full flex items-center justify-center text-primary font-bold text-sm flex-shrink-0 overflow-hidden">
+                      {t.image_url ? (
+                        <img src={t.image_url} alt={t.name} className="w-full h-full object-cover" />
+                      ) : (
+                        t.name.charAt(0)
+                      )}
+                    </div>
                     <p className="font-semibold text-primary text-sm">{t.name}</p>
-                    <p className="text-muted text-xs">{t.role}</p>
                   </div>
-                </div>
-              </Card>
-            ))}
+                </Card>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ── 9. CONTACT CTA ──────────────────────────────────────── */}
       <section className="py-24 bg-primary">

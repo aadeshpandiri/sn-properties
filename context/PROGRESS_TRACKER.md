@@ -285,24 +285,31 @@ Building a premium real estate platform with public website, admin dashboard, le
 ---
 
 ### Phase 12: Testimonials
-- **Status:** 🔄 Next Up
+- **Status:** ✅ Completed
 - **Tasks:**
-  - [ ] Create testimonials management (admin)
-  - [ ] Create add testimonial form
-  - [ ] Create edit testimonial functionality
-  - [ ] Create delete testimonial functionality
-  - [ ] Create testimonials display on homepage
-  - [ ] Create testimonial carousel component
-  - [ ] Create star rating component
-  - [ ] Create approval workflow (optional)
-- **Deliverables:** Complete testimonials system
-- **Blockers:** Awaiting Phase 6 completion
-- **Notes:** Trust-building component
+  - [x] Create testimonials management (admin) — /admin/testimonials list with All/Approved/Pending filter tabs
+  - [x] Create add testimonial form — /admin/testimonials/new with RHF + Zod
+  - [x] Create edit testimonial functionality — /admin/testimonials/[id]/edit
+  - [x] Create delete testimonial functionality — form action with confirm dialog on list page
+  - [x] Create testimonials display on homepage — real DB data (approved only), section hidden when empty
+  - [x] Create star rating component — components/ui/StarRating.js (reusable, Server Component)
+  - [x] Create approval workflow — Approve/Unpublish toggle on list page via server action form binding
+  - [ ] Create testimonial carousel component — skipped; 3-col grid is sufficient for the current design
+- **Deliverables:** Complete testimonials system with admin CRUD and live homepage display
+- **Blockers:** None
+- **Notes:**
+  - app/actions/testimonials.js — createTestimonial, updateTestimonial, deleteTestimonial, toggleApproval
+  - components/admin/TestimonialForm.js — 'use client', RHF + Zod, interactive 5-star click input
+  - components/ui/StarRating.js — Server Component, accepts rating + size props, uses accent color tokens
+  - lib/validators.js — testimonialSchema extended with image_url (optional URL) and approved (bool)
+  - Approve/Unpublish uses server action form binding (.bind) so it works without a separate client component
+  - Homepage testimonials section hidden entirely when no approved testimonials exist in DB
+  - Both admin list and homepage support optional client photo (image_url) with initial-letter fallback
 
 ---
 
 ### Phase 13: Content Management
-- **Status:** ⏳ Not Started
+- **Status:** 🔄 Next Up
 - **Tasks:**
   - [ ] Create page content management (about, why choose us, etc.)
   - [ ] Create contact information management
