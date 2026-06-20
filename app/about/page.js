@@ -117,13 +117,13 @@ export default function AboutPage() {
               <div className="space-y-4 text-muted leading-relaxed">
                 <p>
                   SN Properties was founded on a simple belief: buying or renting a home should be
-                  one of life's great experiences, not a stressful ordeal. We set out to build a team
+                  one of life&apos;s great experiences, not a stressful ordeal. We set out to build a team
                   that combines deep local knowledge with genuine care for every client.
                 </p>
                 <p>
                   Today, we manage hundreds of listings across San Francisco and the wider Bay Area,
                   from sleek SoMa studios to oceanfront villas in Half Moon Bay. Whatever your next
-                  chapter looks like, we'll help you write it.
+                  chapter looks like, we&apos;ll help you write it.
                 </p>
               </div>
               <div className="flex gap-4 mt-8">
@@ -167,7 +167,7 @@ export default function AboutPage() {
             </div>
             <div className="bg-primary rounded-xl p-8 border-l-4 border-accent shadow-sm">
               <p className="text-accent font-bold text-xs uppercase tracking-widest mb-3">Vision</p>
-              <h3 className="text-2xl font-bold text-white mb-4">Where We're Headed</h3>
+              <h3 className="text-2xl font-bold text-white mb-4">Where We&apos;re Headed</h3>
               <p className="text-white/70 leading-relaxed">
                 To be the most trusted and innovative real estate platform in the Bay Area —
                 where clients find not just properties, but their ideal lifestyle and
@@ -230,10 +230,10 @@ export default function AboutPage() {
         <div className="container-custom text-center">
           <p className="text-accent font-semibold text-sm uppercase tracking-widest mb-4">Ready to Begin?</p>
           <h2 className="text-4xl font-bold text-white mb-5">
-            Let's Find Your Perfect Property
+            Let&apos;s Find Your Perfect Property
           </h2>
           <p className="text-white/65 text-lg mb-10 max-w-xl mx-auto">
-            Whether you're buying, selling, renting, or investing — our team is ready to guide you every step of the way.
+            Whether you&apos;re buying, selling, renting, or investing — our team is ready to guide you every step of the way.
           </p>
           <div className="flex gap-4 justify-center flex-wrap">
             <Link
