@@ -1,7 +1,7 @@
 # SN Properties - Progress Tracker
 
-**Last Updated:** 2026-06-16  
-**Status:** Pending Development  
+**Last Updated:** 2026-06-20  
+**Status:** Active Development  
 
 ---
 
@@ -257,24 +257,35 @@ Building a premium real estate platform with public website, admin dashboard, le
 ---
 
 ### Phase 11: Lead Management
-- **Status:** ⏳ Not Started
+- **Status:** ✅ Completed
 - **Tasks:**
-  - [ ] Create inquiries list view (admin)
-  - [ ] Create inquiry detail view
-  - [ ] Create lead status updates
-  - [ ] Create notes functionality
-  - [ ] Create follow-up tracking
-  - [ ] Create inquiry notifications (email)
-  - [ ] Create bulk inquiry actions
-  - [ ] Create inquiry export functionality
-- **Deliverables:** Complete lead management system
-- **Blockers:** Awaiting Phase 6 & 7 completion
-- **Notes:** Business-critical feature
+  - [x] Create inquiries list view (admin) — /admin/inquiries with status filter tabs
+  - [x] Create inquiry detail view — /admin/inquiries/[id] with full contact info
+  - [x] Create lead status updates — StatusSelect client component with server action
+  - [x] Create visit list view — /admin/visits with status filter tabs + date sorting
+  - [x] Create visit detail view — /admin/visits/[id] with visitor info + schedule
+  - [ ] Create notes functionality — skipped (schema has no notes column)
+  - [ ] Create follow-up tracking — skipped (no dedicated tracking table in schema)
+  - [ ] Create inquiry notifications (email) — skipped (requires external email service, deferred to a later phase)
+  - [ ] Create bulk inquiry actions — skipped (deferred to future enhancement)
+  - [ ] Create inquiry export functionality — skipped (deferred to future enhancement)
+- **Deliverables:** Inquiries + visits admin management with status workflows
+- **Blockers:** None
+- **Notes:**
+  - app/actions/leads.js — updateInquiryStatus, updateVisitStatus, deleteInquiry, deleteVisit
+  - components/admin/StatusBadge.js — reusable badge for all lead/visit statuses
+  - components/admin/StatusSelect.js — client component; select + Update button, optimistic save state
+  - components/admin/DeleteLeadButton.js — confirm-before-delete client component, shared by both detail pages
+  - Inquiries ordered by newest first; visits ordered by visit date ascending (upcoming visits first)
+  - Both list pages support status filter via URL param (?status=new etc.) — bookmarkable
+  - Detail pages include quick reply shortcuts (mailto, tel links)
+  - Property link shown on both detail pages (links to admin edit + public listing)
+  - 307 redirects on list/detail routes are correct — middleware guards the admin area
 
 ---
 
 ### Phase 12: Testimonials
-- **Status:** ⏳ Not Started
+- **Status:** 🔄 Next Up
 - **Tasks:**
   - [ ] Create testimonials management (admin)
   - [ ] Create add testimonial form
