@@ -122,11 +122,13 @@ export async function savePropertyImages(propertyId, imageUrls) {
   if (error) return { error: error.message };
 
   revalidatePath('/admin/properties');
+  revalidatePath('/properties', 'layout');
+  revalidatePath('/');
   return { success: true };
 }
 
 export async function deletePropertyImage(imageId, imageUrl) {
-  // Extract storage path from public URL
+  // Extract storage path from public URL and delete from storage
   if (imageUrl) {
     const path = imageUrl.split('/property-images/')[1];
     if (path) {
@@ -137,7 +139,10 @@ export async function deletePropertyImage(imageId, imageUrl) {
   const { error } = await db().from('property_images').delete().eq('id', imageId);
   if (error) return { error: error.message };
 
+  // Revalidate all affected pages so the deleted image stops appearing
   revalidatePath('/admin/properties');
+  revalidatePath('/properties', 'layout'); // covers /properties/[id] detail pages
+  revalidatePath('/');
   return { success: true };
 }
 

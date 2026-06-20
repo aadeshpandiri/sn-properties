@@ -250,6 +250,9 @@ Building a premium real estate platform with public website, admin dashboard, le
   - supabase (anon) used for related properties (public RLS, available only)
   - WhatsApp number set in lib/constants.js WHATSAPP_NUMBER — update to real number before go-live
   - Specs card grid: beds, baths, area, type, availability date (omitted if null)
+- **Bug fixes (post-completion):**
+  - BUG FIX: Deleted image still showing on detail page — deletePropertyImage was not calling revalidatePath for /properties layout or /; fixed by adding revalidatePath('/properties', 'layout') and revalidatePath('/') to the delete action
+  - BUG FIX: "View Details" buttons on homepage not working — homepage used hardcoded numeric mock IDs (1, 2, 3) which fail Supabase UUID queries; fixed by converting app/page.js to an async Server Component that fetches real properties (featured, latest, rentals, forSale) from Supabase with real UUIDs and images
 
 ---
 

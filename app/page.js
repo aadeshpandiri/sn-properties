@@ -3,59 +3,57 @@ import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import PropertyCard from '@/components/property/PropertyCard';
 import HeroSearch from '@/components/home/HeroSearch';
+import { supabase } from '@/lib/supabase';
+import { formatPrice } from '@/lib/utils';
 
 export const metadata = {
   title: 'SN Properties — Premium Real Estate Platform',
-  description: 'Discover premium properties for sale and rent across the Bay Area. Expert guidance, transparent pricing, and exceptional service.',
+  description: 'Discover premium properties for sale and rent. Expert guidance, transparent pricing, and exceptional service.',
 };
 
-const featuredProperties = [
-  { id: 1, title: 'Modern Downtown Apartment', price: '$450,000', bedrooms: 2, bathrooms: 2, area: '1,200', city: 'San Francisco', status: 'Available', listing_type: 'sale' },
-  { id: 2, title: 'Luxury Penthouse Suite', price: '$1,200,000', bedrooms: 3, bathrooms: 3, area: '2,500', city: 'San Francisco', status: 'Available', listing_type: 'sale' },
-  { id: 3, title: 'Elegant Family Villa', price: '$2,800,000', bedrooms: 5, bathrooms: 4, area: '5,200', city: 'Marin County', status: 'Available', listing_type: 'sale' },
-];
+// ── Data helpers ──────────────────────────────────────────────────────────
 
-const latestProperties = [
-  { id: 1, title: 'Modern Downtown Apartment', price: '$450,000', bedrooms: 2, bathrooms: 2, area: '1,200', city: 'San Francisco', status: 'Available', listing_type: 'sale' },
-  { id: 4, title: 'Cozy Garden Studio', price: '$2,500/mo', bedrooms: 1, bathrooms: 1, area: '600', city: 'Oakland', status: 'Available', listing_type: 'rent' },
-  { id: 5, title: 'Waterfront Condo', price: '$875,000', bedrooms: 2, bathrooms: 2, area: '1,800', city: 'Sausalito', status: 'Available', listing_type: 'sale' },
-  { id: 6, title: 'Executive Apartment', price: '$4,200/mo', bedrooms: 2, bathrooms: 2, area: '1,400', city: 'San Francisco', status: 'Available', listing_type: 'rent' },
-];
+async function fetchWithImages(query) {
+  const { data, error } = await query;
+  if (error || !data?.length) return [];
 
-const rentalProperties = [
-  { id: 4, title: 'Cozy Garden Studio', price: '$2,500/mo', bedrooms: 1, bathrooms: 1, area: '600', city: 'Oakland', status: 'Available', listing_type: 'rent' },
-  { id: 6, title: 'Executive Apartment', price: '$4,200/mo', bedrooms: 2, bathrooms: 2, area: '1,400', city: 'San Francisco', status: 'Available', listing_type: 'rent' },
-  { id: 7, title: 'Elegant Villa Estate', price: '$8,500/mo', bedrooms: 4, bathrooms: 4, area: '4,000', city: 'Marin', status: 'Available', listing_type: 'rent' },
-];
+  const ids = data.map((p) => p.id);
+  const { data: images } = await supabase
+    .from('property_images')
+    .select('property_id, image_url')
+    .in('property_id', ids);
 
-const saleProperties = [
-  { id: 1, title: 'Modern Downtown Apartment', price: '$450,000', bedrooms: 2, bathrooms: 2, area: '1,200', city: 'San Francisco', status: 'Available', listing_type: 'sale' },
-  { id: 2, title: 'Luxury Penthouse Suite', price: '$1,200,000', bedrooms: 3, bathrooms: 3, area: '2,500', city: 'San Francisco', status: 'Available', listing_type: 'sale' },
-  { id: 8, title: 'Family Home with Garden', price: '$850,000', bedrooms: 4, bathrooms: 3, area: '3,500', city: 'Palo Alto', status: 'Available', listing_type: 'sale' },
-];
+  const firstImage = {};
+  images?.forEach((img) => {
+    if (!firstImage[img.property_id]) firstImage[img.property_id] = img.image_url;
+  });
+
+  return data.map((p) => ({ ...p, imageUrl: firstImage[p.id] || null }));
+}
+
+const SELECT = 'id, title, price, bedrooms, bathrooms, area, city, status, listing_type, property_type';
+
+async function getHomeProperties() {
+  if (!supabase) return { featured: [], latest: [], rentals: [], forSale: [] };
+
+  const base = supabase.from('properties').select(SELECT).eq('status', 'available');
+
+  const [featured, latest, rentals, forSale] = await Promise.all([
+    fetchWithImages(base.eq('featured', true).order('created_at', { ascending: false }).limit(3)),
+    fetchWithImages(base.order('created_at', { ascending: false }).limit(4)),
+    fetchWithImages(base.eq('listing_type', 'rent').order('created_at', { ascending: false }).limit(3)),
+    fetchWithImages(base.eq('listing_type', 'sale').order('created_at', { ascending: false }).limit(3)),
+  ]);
+
+  return { featured, latest, rentals, forSale };
+}
+
+// ── Static content ────────────────────────────────────────────────────────
 
 const testimonials = [
-  {
-    id: 1,
-    name: 'Jennifer & Mark Davis',
-    role: 'First-Time Homebuyers',
-    rating: 5,
-    review: 'SN Properties turned what seemed like an impossible dream into reality. Their team guided us through every step with patience and expertise. We could not be happier with our new home.',
-  },
-  {
-    id: 2,
-    name: 'Robert Chen',
-    role: 'Property Investor',
-    rating: 5,
-    review: 'As an investor, I rely on accurate market insights and reliable execution. SN Properties delivered on both fronts. Their portfolio of listings and negotiation skills are unmatched.',
-  },
-  {
-    id: 3,
-    name: 'Sarah Mitchell',
-    role: 'Corporate Tenant',
-    rating: 5,
-    review: 'Found the perfect rental for our family within a week of contacting SN Properties. The process was seamless and transparent from start to finish. Highly recommended.',
-  },
+  { id: 1, name: 'Jennifer & Mark Davis', role: 'First-Time Homebuyers', rating: 5, review: 'SN Properties turned what seemed like an impossible dream into reality. Their team guided us through every step with patience and expertise. We could not be happier with our new home.' },
+  { id: 2, name: 'Robert Chen', role: 'Property Investor', rating: 5, review: 'As an investor, I rely on accurate market insights and reliable execution. SN Properties delivered on both fronts. Their portfolio of listings and negotiation skills are unmatched.' },
+  { id: 3, name: 'Sarah Mitchell', role: 'Corporate Tenant', rating: 5, review: 'Found the perfect rental for our family within a week of contacting SN Properties. The process was seamless and transparent from start to finish. Highly recommended.' },
 ];
 
 const features = [
@@ -72,7 +70,30 @@ const stats = [
   { value: '15+', label: 'Years Experience' },
 ];
 
-export default function Home() {
+// ── Page ──────────────────────────────────────────────────────────────────
+
+function PropertySection({ properties }) {
+  if (!properties.length) return null;
+  return properties.map((p) => (
+    <PropertyCard
+      key={p.id}
+      id={p.id}
+      title={p.title}
+      price={formatPrice(p.price)}
+      bedrooms={p.bedrooms}
+      bathrooms={p.bathrooms}
+      area={p.area}
+      city={p.city}
+      status={p.status}
+      listing_type={p.listing_type}
+      imageUrl={p.imageUrl}
+    />
+  ));
+}
+
+export default async function Home() {
+  const { featured, latest, rentals, forSale } = await getHomeProperties();
+
   return (
     <main>
 
@@ -114,87 +135,87 @@ export default function Home() {
       </div>
 
       {/* ── 2. FEATURED PROPERTIES ──────────────────────────────── */}
-      <section className="py-20 bg-background">
-        <div className="container-custom">
-          <div className="text-center mb-14">
-            <span className="section-label">Handpicked for You</span>
-            <h2 className="text-4xl font-bold text-primary mt-3">Featured Properties</h2>
-            <p className="text-muted mt-3 max-w-xl mx-auto">
-              Our expertly curated selection of premium properties available right now
-            </p>
+      {featured.length > 0 && (
+        <section className="py-20 bg-background">
+          <div className="container-custom">
+            <div className="text-center mb-14">
+              <span className="section-label">Handpicked for You</span>
+              <h2 className="text-4xl font-bold text-primary mt-3">Featured Properties</h2>
+              <p className="text-muted mt-3 max-w-xl mx-auto">
+                Our expertly curated selection of premium properties available right now
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <PropertySection properties={featured} />
+            </div>
+            <div className="text-center mt-12">
+              <Link href="/properties">
+                <Button variant="primary" className="px-10 py-3.5">View All Properties</Button>
+              </Link>
+            </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredProperties.map((p) => (
-              <PropertyCard key={p.id} {...p} />
-            ))}
-          </div>
-          <div className="text-center mt-12">
-            <Link href="/properties">
-              <Button variant="primary" className="px-10 py-3.5">View All Properties</Button>
-            </Link>
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ── 3. LATEST LISTINGS ──────────────────────────────────── */}
-      <section className="py-20 bg-surface">
-        <div className="container-custom">
-          <div className="text-center mb-14">
-            <span className="section-label">Just Added</span>
-            <h2 className="text-4xl font-bold text-primary mt-3">Latest Listings</h2>
-            <p className="text-muted mt-3 max-w-xl mx-auto">
-              Fresh properties added to our portfolio — be the first to explore
-            </p>
+      {latest.length > 0 && (
+        <section className="py-20 bg-surface">
+          <div className="container-custom">
+            <div className="text-center mb-14">
+              <span className="section-label">Just Added</span>
+              <h2 className="text-4xl font-bold text-primary mt-3">Latest Listings</h2>
+              <p className="text-muted mt-3 max-w-xl mx-auto">
+                Fresh properties added to our portfolio — be the first to explore
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <PropertySection properties={latest} />
+            </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {latestProperties.map((p) => (
-              <PropertyCard key={p.id} {...p} />
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ── 4. FOR RENT ─────────────────────────────────────────── */}
-      <section className="py-20 bg-background">
-        <div className="container-custom">
-          <div className="flex items-end justify-between mb-14">
-            <div>
-              <span className="section-label">Rent</span>
-              <h2 className="text-4xl font-bold text-primary mt-3">Properties for Rent</h2>
-              <p className="text-muted mt-3">Premium rental properties available now</p>
+      {rentals.length > 0 && (
+        <section className="py-20 bg-background">
+          <div className="container-custom">
+            <div className="flex items-end justify-between mb-14">
+              <div>
+                <span className="section-label">Rent</span>
+                <h2 className="text-4xl font-bold text-primary mt-3">Properties for Rent</h2>
+                <p className="text-muted mt-3">Premium rental properties available now</p>
+              </div>
+              <Link href="/properties?listing_type=rent">
+                <Button variant="ghost">View All Rentals</Button>
+              </Link>
             </div>
-            <Link href="/properties?listing_type=rent">
-              <Button variant="ghost">View All Rentals</Button>
-            </Link>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <PropertySection properties={rentals} />
+            </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {rentalProperties.map((p) => (
-              <PropertyCard key={p.id} {...p} />
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ── 5. FOR SALE ─────────────────────────────────────────── */}
-      <section className="py-20 bg-surface">
-        <div className="container-custom">
-          <div className="flex items-end justify-between mb-14">
-            <div>
-              <span className="section-label">Sale</span>
-              <h2 className="text-4xl font-bold text-primary mt-3">Properties for Sale</h2>
-              <p className="text-muted mt-3">Exceptional properties available for purchase</p>
+      {forSale.length > 0 && (
+        <section className="py-20 bg-surface">
+          <div className="container-custom">
+            <div className="flex items-end justify-between mb-14">
+              <div>
+                <span className="section-label">Sale</span>
+                <h2 className="text-4xl font-bold text-primary mt-3">Properties for Sale</h2>
+                <p className="text-muted mt-3">Exceptional properties available for purchase</p>
+              </div>
+              <Link href="/properties?listing_type=sale">
+                <Button variant="ghost">View All For Sale</Button>
+              </Link>
             </div>
-            <Link href="/properties?listing_type=sale">
-              <Button variant="ghost">View All For Sale</Button>
-            </Link>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <PropertySection properties={forSale} />
+            </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {saleProperties.map((p) => (
-              <PropertyCard key={p.id} {...p} />
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ── 6. ABOUT ────────────────────────────────────────────── */}
       <section className="py-20 bg-background">
