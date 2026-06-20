@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" --max-time 10 \"http://localhost:3000/about\")"
+    ]
+  }
+}

@@ -1,5 +1,4 @@
-import Card from '@/components/ui/Card';
-import Button from '@/components/ui/Button';
+import Link from 'next/link';
 
 export const metadata = {
   title: 'About Us — SN Properties',
@@ -11,147 +10,248 @@ export const metadata = {
   },
 };
 
+const stats = [
+  { value: '500+',  label: 'Properties Sold' },
+  { value: '1,000+', label: 'Happy Clients' },
+  { value: '$2B+',  label: 'Transaction Value' },
+  { value: '15+',   label: 'Years Experience' },
+];
+
+const values = [
+  {
+    icon: '⚖️',
+    title: 'Integrity',
+    description: 'Every deal is conducted with full transparency. No hidden fees, no surprises — just honest guidance you can rely on.',
+  },
+  {
+    icon: '🏆',
+    title: 'Excellence',
+    description: 'We hold ourselves to the highest standard in service, market knowledge, and results for every client we serve.',
+  },
+  {
+    icon: '💡',
+    title: 'Innovation',
+    description: 'From virtual tours to data-driven pricing, we leverage technology to give you a smarter property experience.',
+  },
+  {
+    icon: '🤝',
+    title: 'Community',
+    description: 'We invest in the neighbourhoods we work in and build lasting relationships beyond the transaction.',
+  },
+];
+
+const team = [
+  {
+    name: 'Sarah Johnson',
+    role: 'Founder & CEO',
+    bio: 'With 15+ years in Bay Area real estate, Sarah founded SN Properties to set a new standard for client-first service.',
+    img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400',
+  },
+  {
+    name: 'Michael Chen',
+    role: 'Head of Property Management',
+    bio: 'Michael oversees our growing portfolio with deep expertise across residential and commercial assets.',
+    img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
+  },
+  {
+    name: 'Emma Rodriguez',
+    role: 'Client Relations Director',
+    bio: 'Emma ensures every client feels heard, informed, and supported from first inquiry to closing day.',
+    img: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400',
+  },
+  {
+    name: 'David Park',
+    role: 'Investment Advisor',
+    bio: 'David guides investors with sharp market insights, helping them maximise returns and minimise risk.',
+    img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400',
+  },
+];
+
 export default function AboutPage() {
-  const team = [
-    {
-      name: 'Sarah Johnson',
-      role: 'Founder & CEO',
-      bio: 'With 15 years in real estate, Sarah founded SN Properties to transform the property market.',
-    },
-    {
-      name: 'Michael Chen',
-      role: 'Property Manager',
-      bio: 'Michael oversees our portfolio with expertise in residential and commercial properties.',
-    },
-    {
-      name: 'Emma Rodriguez',
-      role: 'Client Relations',
-      bio: 'Emma ensures every client receives personalized service and exceptional support.',
-    },
-    {
-      name: 'David Park',
-      role: 'Investment Advisor',
-      bio: 'David guides clients through investment decisions with market insights and expertise.',
-    },
-  ];
-
-  const values = [
-    {
-      title: 'Integrity',
-      description: 'We conduct all business with honesty and transparency.',
-    },
-    {
-      title: 'Excellence',
-      description: 'We strive for the highest standards in every aspect of our service.',
-    },
-    {
-      title: 'Innovation',
-      description: 'We embrace technology to improve the real estate experience.',
-    },
-    {
-      title: 'Community',
-      description: 'We build long-lasting relationships with our clients and stakeholders.',
-    },
-  ];
-
   return (
-    <main className="container-custom py-12">
-      {/* Hero Section */}
-      <section className="mb-16 text-center">
-        <h1 className="section-title text-5xl mb-4">About SN Properties</h1>
-        <p className="text-muted text-lg max-w-3xl mx-auto mb-8">
-          We're dedicated to making real estate transactions seamless, transparent, and accessible
-          to everyone. With over a decade of combined expertise, our team brings passion and
-          professionalism to every property transaction.
-        </p>
-      </section>
+    <main>
 
-      {/* Mission & Vision */}
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-        <Card className="p-8 bg-gradient-to-br from-primary/10 to-secondary/10">
-          <h2 className="text-2xl font-bold text-primary mb-4">Our Mission</h2>
-          <p className="text-muted leading-relaxed">
-            To empower individuals and businesses in their real estate decisions through
-            exceptional service, market expertise, and innovative solutions that create lasting
-            value.
+      {/* ── HERO ──────────────────────────────────────────────── */}
+      <section className="relative h-[520px] flex items-center justify-center overflow-hidden">
+        <img
+          src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1600"
+          alt="San Francisco skyline"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-primary/75" />
+        <div className="relative text-center text-white px-6 max-w-3xl mx-auto">
+          <p className="text-accent font-semibold text-sm uppercase tracking-widest mb-4">About Us</p>
+          <h1 className="text-5xl font-bold leading-tight mb-6">
+            Redefining Real Estate,<br />One Home at a Time
+          </h1>
+          <p className="text-white/75 text-lg leading-relaxed">
+            For over 15 years, SN Properties has helped Bay Area families, investors,
+            and businesses find exactly where they belong.
           </p>
-        </Card>
+        </div>
+      </section>
 
-        <Card className="p-8 bg-gradient-to-br from-secondary/10 to-primary/10">
-          <h2 className="text-2xl font-bold text-primary mb-4">Our Vision</h2>
-          <p className="text-muted leading-relaxed">
-            To be the most trusted and innovative real estate platform, where clients find not just
-            properties, but their ideal lifestyle and investment opportunities.
+      {/* ── STATS STRIP ───────────────────────────────────────── */}
+      <section className="bg-primary py-12">
+        <div className="container-custom">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+            {stats.map((s) => (
+              <div key={s.label}>
+                <p className="text-4xl font-bold text-accent mb-1">{s.value}</p>
+                <p className="text-white/70 text-sm font-medium">{s.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── OUR STORY ─────────────────────────────────────────── */}
+      <section className="py-24 bg-background">
+        <div className="container-custom">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <p className="section-label mb-3">Our Story</p>
+              <h2 className="text-4xl font-bold text-primary mb-6 leading-snug">
+                Built on Trust,<br />Driven by Results
+              </h2>
+              <div className="space-y-4 text-muted leading-relaxed">
+                <p>
+                  SN Properties was founded on a simple belief: buying or renting a home should be
+                  one of life's great experiences, not a stressful ordeal. We set out to build a team
+                  that combines deep local knowledge with genuine care for every client.
+                </p>
+                <p>
+                  Today, we manage hundreds of listings across San Francisco and the wider Bay Area,
+                  from sleek SoMa studios to oceanfront villas in Half Moon Bay. Whatever your next
+                  chapter looks like, we'll help you write it.
+                </p>
+              </div>
+              <div className="flex gap-4 mt-8">
+                <Link href="/properties" className="btn-primary px-7 py-3 inline-flex">
+                  Browse Listings
+                </Link>
+                <Link href="/contact" className="btn-ghost px-7 py-3 inline-flex">
+                  Get in Touch
+                </Link>
+              </div>
+            </div>
+            <div className="relative">
+              <div className="rounded-xl overflow-hidden h-[440px]">
+                <img
+                  src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=900"
+                  alt="Modern luxury interior"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="absolute -bottom-6 -left-6 bg-accent text-primary px-7 py-5 rounded-xl shadow-lg">
+                <p className="text-3xl font-bold">15+</p>
+                <p className="text-sm font-semibold opacity-80">Years of Excellence</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── MISSION & VISION ──────────────────────────────────── */}
+      <section className="py-20 bg-surface">
+        <div className="container-custom">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="bg-white rounded-xl p-8 border-l-4 border-accent shadow-sm">
+              <p className="text-accent font-bold text-xs uppercase tracking-widest mb-3">Mission</p>
+              <h3 className="text-2xl font-bold text-primary mb-4">Why We Exist</h3>
+              <p className="text-muted leading-relaxed">
+                To empower individuals and businesses in their real estate decisions through
+                exceptional service, market expertise, and innovative solutions that create
+                lasting value for our clients and communities.
+              </p>
+            </div>
+            <div className="bg-primary rounded-xl p-8 border-l-4 border-accent shadow-sm">
+              <p className="text-accent font-bold text-xs uppercase tracking-widest mb-3">Vision</p>
+              <h3 className="text-2xl font-bold text-white mb-4">Where We're Headed</h3>
+              <p className="text-white/70 leading-relaxed">
+                To be the most trusted and innovative real estate platform in the Bay Area —
+                where clients find not just properties, but their ideal lifestyle and
+                long-term investment opportunities.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── CORE VALUES ───────────────────────────────────────── */}
+      <section className="py-24 bg-background">
+        <div className="container-custom">
+          <div className="text-center mb-14">
+            <p className="section-label mb-3">What We Stand For</p>
+            <h2 className="text-4xl font-bold text-primary">Our Core Values</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {values.map((v) => (
+              <div key={v.title} className="card p-7 text-center group hover:-translate-y-1 transition-transform duration-300">
+                <div className="text-4xl mb-4">{v.icon}</div>
+                <h3 className="text-lg font-bold text-primary mb-3">{v.title}</h3>
+                <p className="text-muted text-sm leading-relaxed">{v.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── TEAM ──────────────────────────────────────────────── */}
+      <section className="py-24 bg-surface">
+        <div className="container-custom">
+          <div className="text-center mb-14">
+            <p className="section-label mb-3">The People Behind It</p>
+            <h2 className="text-4xl font-bold text-primary">Meet Our Team</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {team.map((member) => (
+              <div key={member.name} className="card overflow-hidden group">
+                <div className="h-56 overflow-hidden">
+                  <img
+                    src={member.img}
+                    alt={member.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="font-bold text-primary text-lg">{member.name}</h3>
+                  <p className="text-accent text-sm font-semibold mt-0.5 mb-3">{member.role}</p>
+                  <p className="text-muted text-sm leading-relaxed">{member.bio}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA ───────────────────────────────────────────────── */}
+      <section className="py-24 bg-primary">
+        <div className="container-custom text-center">
+          <p className="text-accent font-semibold text-sm uppercase tracking-widest mb-4">Ready to Begin?</p>
+          <h2 className="text-4xl font-bold text-white mb-5">
+            Let's Find Your Perfect Property
+          </h2>
+          <p className="text-white/65 text-lg mb-10 max-w-xl mx-auto">
+            Whether you're buying, selling, renting, or investing — our team is ready to guide you every step of the way.
           </p>
-        </Card>
-      </section>
-
-      {/* Core Values */}
-      <section className="mb-16">
-        <h2 className="text-4xl font-bold text-primary mb-8 text-center">Core Values</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {values.map((value, index) => (
-            <Card key={index} className="p-6 text-center hover:shadow-lg transition-shadow">
-              <h3 className="text-lg font-bold text-primary mb-2">{value.title}</h3>
-              <p className="text-muted text-sm">{value.description}</p>
-            </Card>
-          ))}
-        </div>
-      </section>
-
-      {/* Team Section */}
-      <section className="mb-16">
-        <h2 className="text-4xl font-bold text-primary mb-8 text-center">Meet Our Team</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {team.map((member, index) => (
-            <Card key={index} className="p-6 hover:shadow-lg transition-shadow">
-              <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-full mb-4"></div>
-              <h3 className="font-bold text-lg text-primary mb-1">{member.name}</h3>
-              <p className="text-secondary text-sm font-medium mb-3">{member.role}</p>
-              <p className="text-muted text-sm">{member.bio}</p>
-            </Card>
-          ))}
-        </div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="mb-16 bg-surface rounded-lg p-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
-          <div>
-            <h3 className="text-4xl font-bold text-primary mb-2">500+</h3>
-            <p className="text-muted">Properties Sold</p>
-          </div>
-          <div>
-            <h3 className="text-4xl font-bold text-primary mb-2">1000+</h3>
-            <p className="text-muted">Happy Clients</p>
-          </div>
-          <div>
-            <h3 className="text-4xl font-bold text-primary mb-2">$2B+</h3>
-            <p className="text-muted">Transaction Value</p>
-          </div>
-          <div>
-            <h3 className="text-4xl font-bold text-primary mb-2">15+</h3>
-            <p className="text-muted">Years Experience</p>
+          <div className="flex gap-4 justify-center flex-wrap">
+            <Link
+              href="/properties"
+              className="px-8 py-3 bg-accent text-primary font-bold rounded-lg hover:bg-accent/90 transition-colors"
+            >
+              Browse Properties
+            </Link>
+            <Link
+              href="/contact"
+              className="px-8 py-3 border border-white/30 text-white font-bold rounded-lg hover:bg-white/10 transition-colors"
+            >
+              Contact Us
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="text-center">
-        <h2 className="text-3xl font-bold text-primary mb-4">Ready to Get Started?</h2>
-        <p className="text-muted mb-8 max-w-2xl mx-auto">
-          Whether you're buying, selling, or investing, our team is here to guide you through every
-          step of the process.
-        </p>
-        <div className="flex gap-4 justify-center flex-wrap">
-          <Button variant="primary" className="px-8 py-3">
-            Explore Properties
-          </Button>
-          <Button variant="secondary" className="px-8 py-3">
-            Contact Us
-          </Button>
-        </div>
-      </section>
     </main>
   );
 }
