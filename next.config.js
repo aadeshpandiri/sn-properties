@@ -5,7 +5,8 @@ const nextConfig = {
     domains: [
       'localhost',
       'vercel.app',
-      'easmscttakkzqtgyqnma.supabase.co', // Supabase storage
+      'easmscttakkzqtgyqnma.supabase.co',
+      'images.unsplash.com',
     ],
   },
   env: {

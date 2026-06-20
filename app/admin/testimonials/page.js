@@ -3,6 +3,7 @@ import { supabaseServer } from '@/lib/supabase';
 import { formatDate } from '@/lib/utils';
 import StarRating from '@/components/ui/StarRating';
 import { toggleApproval, deleteTestimonial } from '@/app/actions/testimonials';
+import DeleteForm from '@/components/admin/DeleteForm';
 
 export const metadata = { title: 'Testimonials — SN Properties Admin' };
 
@@ -139,15 +140,7 @@ export default async function TestimonialsPage({ searchParams }) {
                   >
                     Edit
                   </Link>
-                  <form action={deleteBound}>
-                    <button
-                      type="submit"
-                      className="px-3 py-1.5 text-xs font-semibold border border-red-200 text-red-600 rounded-lg hover:bg-red-50 transition-colors"
-                      onClick={(e) => { if (!confirm('Delete this testimonial?')) e.preventDefault(); }}
-                    >
-                      Delete
-                    </button>
-                  </form>
+                  <DeleteForm action={deleteBound} confirmMessage="Delete this testimonial? This cannot be undone." />
                 </div>
               </div>
             );

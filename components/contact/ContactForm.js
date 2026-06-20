@@ -41,32 +41,55 @@ export default function ContactForm() {
 
       <h2 className="text-xl font-bold text-primary mb-6">Send Us a Message</h2>
 
+
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-primary mb-1.5">Full Name <span className="text-red-500">*</span></label>
-            <Input {...register('name')} placeholder="John Smith" error={errors.name?.message} />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-primary mb-1.5">Email <span className="text-red-500">*</span></label>
-            <Input {...register('email')} type="email" placeholder="john@example.com" error={errors.email?.message} />
-          </div>
+          <Input
+            id="name"
+            label="Full Name"
+            register={register}
+            required
+            placeholder="John Smith"
+            error={errors.name}
+          />
+          <Input
+            id="email"
+            label="Email"
+            type="email"
+            register={register}
+            required
+            placeholder="john@example.com"
+            error={errors.email}
+          />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-primary mb-1.5">Phone <span className="text-muted text-xs font-normal">(optional)</span></label>
-          <Input {...register('phone')} type="tel" placeholder="(415) 555-0000" error={errors.phone?.message} />
-        </div>
+        <Input
+          id="phone"
+          label="Phone (optional)"
+          type="tel"
+          register={register}
+          placeholder="(415) 555-0000"
+          error={errors.phone}
+        />
 
-        <div>
-          <label className="block text-sm font-medium text-primary mb-1.5">Subject <span className="text-red-500">*</span></label>
-          <Input {...register('subject')} placeholder="Inquiry about a property" error={errors.subject?.message} />
-        </div>
+        <Input
+          id="subject"
+          label="Subject"
+          register={register}
+          required
+          placeholder="Inquiry about a property"
+          error={errors.subject}
+        />
 
-        <div>
-          <label className="block text-sm font-medium text-primary mb-1.5">Message <span className="text-red-500">*</span></label>
-          <TextArea {...register('message')} rows={5} placeholder="Tell us how we can help..." error={errors.message?.message} />
-        </div>
+        <TextArea
+          id="message"
+          label="Message"
+          register={register}
+          required
+          rows={5}
+          placeholder="Tell us how we can help..."
+          error={errors.message}
+        />
 
         <button
           type="submit"

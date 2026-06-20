@@ -38,13 +38,13 @@ const SELECT = 'id, title, price, bedrooms, bathrooms, area, city, status, listi
 async function getHomeProperties() {
   if (!supabase) return { featured: [], latest: [], rentals: [], forSale: [] };
 
-  const base = supabase.from('properties').select(SELECT).eq('status', 'available');
+  const q = () => supabase.from('properties').select(SELECT).eq('status', 'available');
 
   const [featured, latest, rentals, forSale] = await Promise.all([
-    fetchWithImages(base.eq('featured', true).order('created_at', { ascending: false }).limit(3)),
-    fetchWithImages(base.order('created_at', { ascending: false }).limit(4)),
-    fetchWithImages(base.eq('listing_type', 'rent').order('created_at', { ascending: false }).limit(3)),
-    fetchWithImages(base.eq('listing_type', 'sale').order('created_at', { ascending: false }).limit(3)),
+    fetchWithImages(q().eq('featured', true).order('created_at', { ascending: false }).limit(3)),
+    fetchWithImages(q().order('created_at', { ascending: false }).limit(4)),
+    fetchWithImages(q().eq('listing_type', 'rent').order('created_at', { ascending: false }).limit(3)),
+    fetchWithImages(q().eq('listing_type', 'sale').order('created_at', { ascending: false }).limit(3)),
   ]);
 
   return { featured, latest, rentals, forSale };
@@ -235,7 +235,13 @@ export default async function Home() {
         <div className="container-custom">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="relative">
-              <div className="h-[480px] bg-gradient-to-br from-surface to-border rounded-xl" />
+              <div className="h-[480px] rounded-xl overflow-hidden">
+                <img
+                  src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=900"
+                  alt="Modern luxury property interior"
+                  className="w-full h-full object-cover"
+                />
+              </div>
               <div className="absolute -bottom-6 -right-6 bg-accent text-primary px-8 py-6 rounded-xl shadow-hover">
                 <p className="text-4xl font-bold">15+</p>
                 <p className="text-sm font-semibold mt-1 opacity-80">Years of Excellence</p>

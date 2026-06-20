@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { supabaseServer } from '@/lib/supabase';
 import { toggleFaqActive, deleteFaq } from '@/app/actions/settings';
+import DeleteForm from '@/components/admin/DeleteForm';
 
 export const metadata = { title: 'FAQs — SN Properties Admin' };
 
@@ -92,15 +93,7 @@ export default async function FaqsPage() {
                     Edit
                   </Link>
 
-                  <form action={deleteBound}>
-                    <button
-                      type="submit"
-                      className="px-3 py-1.5 text-xs font-semibold border border-red-200 text-red-600 rounded-lg hover:bg-red-50 transition-colors"
-                      onClick={(e) => { if (!confirm('Delete this FAQ?')) e.preventDefault(); }}
-                    >
-                      Delete
-                    </button>
-                  </form>
+                  <DeleteForm action={deleteBound} confirmMessage="Delete this FAQ? This cannot be undone." />
                 </div>
               </div>
             );
