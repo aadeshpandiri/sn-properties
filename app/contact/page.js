@@ -1,155 +1,135 @@
-'use client';
-
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import Input from '@/components/forms/Input';
-import TextArea from '@/components/forms/TextArea';
-import Button from '@/components/ui/Button';
+import { supabase } from '@/lib/supabase';
+import ContactForm from '@/components/contact/ContactForm';
+import FaqAccordion from '@/components/contact/FaqAccordion';
 import Card from '@/components/ui/Card';
 
-const contactSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
-  email: z.string().email('Invalid email address'),
-  phone: z.string().optional(),
-  subject: z.string().min(5, 'Subject must be at least 5 characters'),
-  message: z.string().min(20, 'Message must be at least 20 characters'),
-});
+export const metadata = {
+  title: 'Contact Us — SN Properties',
+  description: 'Get in touch with the SN Properties team. We are ready to help you find your perfect property.',
+};
 
-export default function ContactPage() {
-  const [submitted, setSubmitted] = useState(false);
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors, isSubmitting },
-  } = useForm({
-    resolver: zodResolver(contactSchema),
-  });
+const DEFAULTS = {
+  phone:          '(415) 555-0123',
+  email:          'info@snproperties.com',
+  address:        '123 Market Street, San Francisco, CA 94103',
+  hours_weekday:  'Mon – Fri: 9:00 AM – 6:00 PM',
+  hours_saturday: 'Sat: 10:00 AM – 4:00 PM',
+  hours_sunday:   'Sun: Closed',
+};
 
-  const onSubmit = async (data) => {
-    try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      console.log('Form submitted:', data);
-      setSubmitted(true);
-      reset();
-      setTimeout(() => setSubmitted(false), 5000);
-    } catch (error) {
-      console.error('Submission error:', error);
-    }
-  };
+async function getContactData() {
+  if (!supabase) return { settings: DEFAULTS, faqs: [] };
+
+  const [settingsRes, faqsRes] = await Promise.all([
+    supabase.from('site_settings').select('key, value'),
+    supabase.from('faqs').select('id, question, answer').eq('active', true).order('order_index').order('created_at'),
+  ]);
+
+  const settings = settingsRes.data?.length
+    ? settingsRes.data.reduce((acc, row) => ({ ...acc, [row.key]: row.value ?? '' }), { ...DEFAULTS })
+    : DEFAULTS;
+
+  return { settings, faqs: faqsRes.data ?? [] };
+}
+
+export default async function ContactPage() {
+  const { settings, faqs } = await getContactData();
+
+  const infoCards = [
+    {
+      icon: '📍',
+      label: 'Office Address',
+      value: settings.address,
+      href: `https://maps.google.com/?q=${encodeURIComponent(settings.address)}`,
+      linkLabel: 'Get directions',
+    },
+    {
+      icon: '📞',
+      label: 'Phone',
+      value: settings.phone,
+      href: `tel:${settings.phone.replace(/\D/g, '')}`,
+      linkLabel: 'Call us',
+    },
+    {
+      icon: '✉️',
+      label: 'Email',
+      value: settings.email,
+      href: `mailto:${settings.email}`,
+      linkLabel: 'Send email',
+    },
+    {
+      icon: '🕐',
+      label: 'Business Hours',
+      value: [settings.hours_weekday, settings.hours_saturday, settings.hours_sunday].filter(Boolean).join('\n'),
+    },
+  ];
 
   return (
-    <main className="container-custom py-12">
-      {/* Header Section */}
-      <section className="mb-12 text-center">
-        <h1 className="section-title text-5xl mb-2">Get In Touch</h1>
-        <p className="text-muted text-lg max-w-2xl mx-auto">
-          Have questions about our properties? Our team is ready to help you find your perfect home.
-        </p>
+    <main>
+      {/* Header */}
+      <section className="bg-primary py-20">
+        <div className="container-custom text-center">
+          <span className="section-label">We&apos;re Here to Help</span>
+          <h1 className="text-5xl font-bold text-white mt-4 mb-4">Get In Touch</h1>
+          <p className="text-white/60 text-lg max-w-xl mx-auto">
+            Have questions about a property? Our team is ready to help you find the perfect home.
+          </p>
+        </div>
       </section>
 
-      {/* Contact Form & Info */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-        {/* Contact Form */}
-        <div className="lg:col-span-2">
-          <Card className="p-8">
-            {submitted && (
-              <div className="mb-6 p-4 bg-green-100 text-green-800 rounded-md">
-                ✓ Thank you! We received your message and will get back to you soon.
-              </div>
-            )}
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Input
-                  label="Full Name"
-                  id="name"
-                  register={register}
-                  required
-                  error={errors.name}
-                />
-                <Input
-                  label="Email Address"
-                  id="email"
-                  type="email"
-                  register={register}
-                  required
-                  error={errors.email}
-                />
-              </div>
+      {/* Form + contact info */}
+      <section className="py-16 bg-background">
+        <div className="container-custom">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-              <Input
-                label="Phone (Optional)"
-                id="phone"
-                type="tel"
-                register={register}
-                error={errors.phone}
-              />
+            {/* Contact form — left (2 cols) */}
+            <div className="lg:col-span-2">
+              <ContactForm />
+            </div>
 
-              <Input
-                label="Subject"
-                id="subject"
-                register={register}
-                required
-                error={errors.subject}
-              />
+            {/* Contact info — right */}
+            <div className="space-y-4">
+              {infoCards.map((card) => (
+                <Card key={card.label} className="p-5">
+                  <div className="flex items-start gap-3">
+                    <span className="text-xl flex-shrink-0 mt-0.5">{card.icon}</span>
+                    <div>
+                      <p className="text-xs font-semibold text-muted uppercase tracking-wide mb-1">{card.label}</p>
+                      <p className="text-sm text-primary whitespace-pre-line leading-relaxed">{card.value}</p>
+                      {card.href && (
+                        <a
+                          href={card.href}
+                          className="text-xs text-accent hover:underline mt-1.5 inline-block"
+                          target={card.href.startsWith('http') ? '_blank' : undefined}
+                          rel={card.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                        >
+                          {card.linkLabel} →
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </Card>
+              ))}
 
-              <TextArea
-                label="Message"
-                id="message"
-                register={register}
-                required
-                rows={6}
-                error={errors.message}
-              />
+              {/* WhatsApp CTA */}
+              {settings.whatsapp && (
+                <a
+                  href={`https://wa.me/${settings.whatsapp}?text=${encodeURIComponent('Hi, I have a question about a property.')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 w-full py-3 bg-green-500 hover:bg-green-600 text-white text-sm font-semibold rounded-lg transition-colors"
+                >
+                  💬 Chat on WhatsApp
+                </a>
+              )}
+            </div>
 
-              <Button
-                variant="primary"
-                type="submit"
-                className="w-full"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? 'Sending...' : 'Send Message'}
-              </Button>
-            </form>
-          </Card>
+          </div>
         </div>
+      </section>
 
-        {/* Contact Info */}
-        <div className="space-y-6">
-          <Card className="p-6">
-            <h3 className="font-bold text-lg mb-2 text-primary">Address</h3>
-            <p className="text-muted">
-              123 Market Street
-              <br />
-              San Francisco, CA 94103
-            </p>
-          </Card>
-
-          <Card className="p-6">
-            <h3 className="font-bold text-lg mb-2 text-primary">Phone</h3>
-            <p className="text-muted">(415) 555-0123</p>
-          </Card>
-
-          <Card className="p-6">
-            <h3 className="font-bold text-lg mb-2 text-primary">Email</h3>
-            <p className="text-muted">info@snproperties.com</p>
-          </Card>
-
-          <Card className="p-6">
-            <h3 className="font-bold text-lg mb-2 text-primary">Hours</h3>
-            <p className="text-muted text-sm">
-              Mon - Fri: 9:00 AM - 6:00 PM
-              <br />
-              Sat: 10:00 AM - 4:00 PM
-              <br />
-              Sun: Closed
-            </p>
-          </Card>
-        </div>
-      </div>
+      {/* FAQ accordion */}
+      <FaqAccordion faqs={faqs} />
     </main>
   );
 }

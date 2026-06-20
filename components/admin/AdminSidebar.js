@@ -10,6 +10,8 @@ const navItems = [
   { href: '/admin/inquiries', label: 'Inquiries', icon: '📥' },
   { href: '/admin/visits', label: 'Visits', icon: '📅' },
   { href: '/admin/testimonials', label: 'Testimonials', icon: '⭐' },
+  { href: '/admin/faqs', label: 'FAQs', icon: '❓' },
+  { href: '/admin/settings', label: 'Settings', icon: '⚙️' },
 ];
 
 export default function AdminSidebar() {

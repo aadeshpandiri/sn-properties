@@ -309,23 +309,33 @@ Building a premium real estate platform with public website, admin dashboard, le
 ---
 
 ### Phase 13: Content Management
-- **Status:** 🔄 Next Up
+- **Status:** ✅ Completed
 - **Tasks:**
-  - [ ] Create page content management (about, why choose us, etc.)
-  - [ ] Create contact information management
-  - [ ] Create CTA configuration
-  - [ ] Create FAQ management (optional)
-  - [ ] Create blog/news section (optional)
-  - [ ] Create WYSIWYG editor integration
-  - [ ] Create content versioning
-- **Deliverables:** Flexible content management
-- **Blockers:** Awaiting Phase 6 completion
-- **Notes:** Non-technical admin access required
+  - [x] Create contact information management — /admin/settings form (phone, email, address, hours, WhatsApp)
+  - [x] Create FAQ management — /admin/faqs CRUD (list, add, edit, delete, publish/hide toggle)
+  - [x] Wire contact page to DB — /contact now reads from site_settings + faqs tables instead of hardcoded values
+  - [x] FAQ accordion on contact page — native HTML details/summary, no JS required
+  - [ ] Create page content management (about, why choose us) — skipped; about page is static, no schema for it
+  - [ ] Create CTA configuration — skipped; homepage CTAs are structural, low value to make dynamic
+  - [ ] Create blog/news section — skipped (out of scope for v1)
+  - [ ] Create WYSIWYG editor — skipped (adds heavy dependency, no content that needs rich text)
+  - [ ] Create content versioning — skipped (no schema support, overkill for v1)
+- **Deliverables:** Admin-manageable contact info, FAQs, and contact page wired to DB
+- **Blockers:** Requires SQL migration (site_settings + faqs tables) run in Supabase before use
+- **Notes:**
+  - app/actions/settings.js — saveSettings, createFaq, updateFaq, deleteFaq, toggleFaqActive
+  - components/admin/SettingsForm.js — 'use client', RHF + Zod, upsert all settings in one save
+  - components/admin/FaqForm.js — 'use client', RHF + Zod, order_index for sorting
+  - components/contact/ContactForm.js — extracted from old contact page (client component)
+  - components/contact/FaqAccordion.js — Server Component, native details/summary accordion
+  - app/contact/page.js — rewritten as async Server Component; falls back to hardcoded defaults if DB empty
+  - AdminSidebar updated to include FAQs (❓) and Settings (⚙️) nav items
+  - SQL migration required: CREATE TABLE site_settings + faqs with RLS policies
 
 ---
 
 ### Phase 14: SEO
-- **Status:** ⏳ Not Started
+- **Status:** 🔄 Next Up
 - **Tasks:**
   - [ ] Setup dynamic metadata generation
   - [ ] Create sitemap.xml

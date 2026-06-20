@@ -134,8 +134,8 @@ snproperties/
 | 10 | Property Detail Pages | ✅ Complete |
 | 11 | Lead Management | ✅ Complete |
 | 12 | Testimonials | ✅ Complete |
-| 13 | Content Management | 🔄 Next |
-| 14 | SEO | ⏳ Pending |
+| 13 | Content Management | ✅ Complete |
+| 14 | SEO | 🔄 Next |
 | 15 | Testing | ⏳ Pending |
 | 16 | Deployment | ⏳ Pending |
 | 17 | Performance Optimization | ⏳ Pending |
