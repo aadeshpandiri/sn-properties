@@ -39,7 +39,7 @@ export default function Navigation() {
           </ul>
 
           {/* CTA Button */}
-          <Link href="/contact">
+          <Link href="/contact" className="hidden md:block">
             <Button variant="primary" className="whitespace-nowrap">
               Get Started
             </Button>
