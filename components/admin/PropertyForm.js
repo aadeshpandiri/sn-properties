@@ -8,7 +8,7 @@ import { propertySchema } from '@/lib/validators';
 import { PROPERTY_TYPES, LISTING_TYPES, PROPERTY_STATUS } from '@/lib/constants';
 import { savePropertyImages, savePropertyVideos } from '@/app/actions/properties';
 import ImageUpload from '@/components/admin/ImageUpload';
-import VideoUrlInput from '@/components/admin/VideoUrlInput';
+import VideoUpload from '@/components/admin/VideoUpload';
 
 function FieldError({ error }) {
   if (!error) return null;
@@ -72,8 +72,14 @@ export default function PropertyForm({ property, action, existingImages = [], ex
     const propertyId = result?.id ?? property?.id;
 
     if (propertyId) {
-      if (pendingImageUrls.length) await savePropertyImages(propertyId, pendingImageUrls);
-      if (pendingVideoUrls.length) await savePropertyVideos(propertyId, pendingVideoUrls);
+      if (pendingImageUrls.length) {
+        const imgResult = await savePropertyImages(propertyId, pendingImageUrls);
+        if (imgResult?.error) { setServerError(imgResult.error); setLoading(false); return; }
+      }
+      if (pendingVideoUrls.length) {
+        const vidResult = await savePropertyVideos(propertyId, pendingVideoUrls);
+        if (vidResult?.error) { setServerError(vidResult.error); setLoading(false); return; }
+      }
     }
 
     router.push('/admin/properties');
@@ -271,8 +277,8 @@ export default function PropertyForm({ property, action, existingImages = [], ex
         {/* ── VIDEOS ── */}
         <div className="card p-6">
           <h3 className="font-semibold text-primary mb-1">Videos</h3>
-          <p className="text-muted text-xs mb-5">Paste YouTube or Vimeo URLs to showcase video tours.</p>
-          <VideoUrlInput
+          <p className="text-muted text-xs mb-5">Videos upload immediately when selected — no need to save first.</p>
+          <VideoUpload
             existingVideos={existingVideos}
             onNewVideos={setPendingVideoUrls}
           />

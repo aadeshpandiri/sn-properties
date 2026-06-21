@@ -154,10 +154,44 @@ export async function savePropertyVideos(propertyId, videoUrls) {
   const { error } = await db().from('property_videos').insert(records);
   if (error) return { error: error.message };
 
+  revalidatePath('/admin/properties');
+  revalidatePath(`/admin/properties/${propertyId}/edit`);
+  revalidatePath(`/properties/${propertyId}`);
+  revalidatePath('/');
   return { success: true };
 }
 
-export async function deletePropertyVideo(videoId) {
+const ALLOWED_VIDEO_TYPES = ['video/mp4', 'video/quicktime', 'video/webm'];
+const MAX_VIDEO_SIZE = 200 * 1024 * 1024; // 200 MB
+
+export async function uploadPropertyVideo(formData) {
+  const file = formData.get('file');
+  if (!file || typeof file === 'string') return { error: 'No file provided' };
+  if (!ALLOWED_VIDEO_TYPES.includes(file.type)) return { error: 'Invalid type — use MP4, MOV, or WEBM' };
+  if (file.size > MAX_VIDEO_SIZE) return { error: 'File too large — max 200 MB' };
+
+  const ext = file.name.split('.').pop().toLowerCase();
+  const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+
+  const { data, error } = await db().storage
+    .from('property-videos')
+    .upload(path, file, { contentType: file.type, upsert: false });
+
+  if (error) return { error: error.message };
+
+  const { data: { publicUrl } } = db().storage
+    .from('property-videos')
+    .getPublicUrl(data.path);
+
+  return { success: true, url: publicUrl };
+}
+
+export async function deletePropertyVideo(videoId, videoUrl) {
+  if (videoUrl) {
+    const path = videoUrl.split('/property-videos/')[1];
+    if (path) await db().storage.from('property-videos').remove([path]);
+  }
+
   const { error } = await db().from('property_videos').delete().eq('id', videoId);
   if (error) return { error: error.message };
   return { success: true };
