@@ -7,6 +7,7 @@ const nextConfig = {
       'localhost',
       'vercel.app',
       'easmscttakkzqtgyqnma.supabase.co',
+      'wvsalytychkjmyzwjtnm.supabase.co',
       'images.unsplash.com',
     ],
   },
