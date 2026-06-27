@@ -173,7 +173,7 @@ export default function PropertyForm({ property, action, existingImages = [], ex
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
             <div>
-              <Label required>Price ({listingType === 'rent' ? '$/month' : '$'})</Label>
+              <Label required>Price ({listingType === 'rent' ? '£/month' : '£'})</Label>
               <input
                 {...register('price', { valueAsNumber: true })}
                 type="number"
