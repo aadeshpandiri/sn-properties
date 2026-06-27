@@ -13,7 +13,7 @@ export const metadata = {
 const stats = [
   { value: '500+',  label: 'Properties Sold' },
   { value: '1,000+', label: 'Happy Clients' },
-  { value: '$2B+',  label: 'Transaction Value' },
+  { value: '£2B+',  label: 'Transaction Value' },
   { value: '15+',   label: 'Years Experience' },
 ];
 

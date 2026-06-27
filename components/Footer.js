@@ -75,20 +75,20 @@ export default function Footer() {
             <h4 className="font-bold mb-4">Contact</h4>
             <ul className="space-y-2 text-sm text-gray-300">
               <li>
-                <a href="tel:+14155550123" className="hover:text-white transition-colors">
-                  (415) 555-0123
+                <a href="tel:+447424794571" className="hover:text-white transition-colors">
+                  +44 7424 794571
                 </a>
               </li>
               <li>
-                <a href="mailto:info@snproperties.com" className="hover:text-white transition-colors">
-                  info@snproperties.com
+                <a href="mailto:Snlettingsproperties@gmail.com" className="hover:text-white transition-colors">
+                  Snlettingsproperties@gmail.com
                 </a>
               </li>
               <li>
                 <address className="not-italic">
-                  123 Market Street
-                  <br />
-                  San Francisco, CA 94103
+                  Icon Office London, Office 1<br />
+                  182-184 High Street North<br />
+                  East Ham, London E6 2JA
                 </address>
               </li>
             </ul>

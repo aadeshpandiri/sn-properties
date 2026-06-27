@@ -9,9 +9,9 @@ export const metadata = {
 };
 
 const DEFAULTS = {
-  phone:          '(415) 555-0123',
-  email:          'info@snproperties.com',
-  address:        '123 Market Street, San Francisco, CA 94103',
+  phone:          '+44 7424 794571',
+  email:          'Snlettingsproperties@gmail.com',
+  address:        'Icon Office London, Office 1, 182-184 High Street North, East Ham, London E6 2JA',
   hours_weekday:  'Mon – Fri: 9:00 AM – 6:00 PM',
   hours_saturday: 'Sat: 10:00 AM – 4:00 PM',
   hours_sunday:   'Sun: Closed',
